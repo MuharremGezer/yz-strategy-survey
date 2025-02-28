@@ -4,7 +4,7 @@ import { SurveyQuestion } from "@/types/survey";
 export const initialQuestions: SurveyQuestion[] = [
   {
     id: 1,
-    text: "Yönetim ekibimiz, yapay zekanın (Yapay Zeka) sektörümüze ve iş süreçlerimize etkilerini iyi anlıyor.",
+    text: "Yönetim ekibimiz, yapay zekanın sektörümüze ve iş süreçlerimize etkilerini iyi anlıyor.",
     answer: null,
     comment: "",
   },
