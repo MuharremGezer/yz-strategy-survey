@@ -1,3 +1,4 @@
+
 import React, { useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
@@ -198,36 +199,46 @@ const QuestionsStep: React.FC<QuestionsStepProps> = ({
             <div className="text-sm text-gray-500 bg-white px-3 py-2 rounded-md border border-gray-200">
               {currentQuestionIndex + 1} / {questions.length}
             </div>
-            <Button 
-              onClick={handleNextQuestion}
-              className="bg-blue-700 hover:bg-blue-800 text-white"
-              disabled={!isQuestionAnswered()}
-              size="lg"
-            >
-              {currentQuestionIndex < questions.length - 1 ? (
-                <span className="flex items-center">
-                  {t("nav.next")}
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </span>
-              ) : (
-                <span className="flex items-center">
-                  {submitting ? (
-                    <>
-                      <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                      </svg>
-                      {t("nav.submitting")}
-                    </>
-                  ) : (
-                    <>
-                      <Send className="mr-2 h-4 w-4" />
-                      {t("nav.submit")}
-                    </>
-                  )}
-                </span>
-              )}
-            </Button>
+            <div className="flex space-x-3">
+              <Button 
+                variant="outline"
+                onClick={handlePreviousQuestion}
+                className="border-gray-300"
+              >
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                {t("nav.back")}
+              </Button>
+              <Button 
+                onClick={handleNextQuestion}
+                className="bg-blue-700 hover:bg-blue-800 text-white"
+                disabled={!isQuestionAnswered()}
+                size="lg"
+              >
+                {currentQuestionIndex < questions.length - 1 ? (
+                  <span className="flex items-center">
+                    {t("nav.next")}
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </span>
+                ) : (
+                  <span className="flex items-center">
+                    {submitting ? (
+                      <>
+                        <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        {t("nav.submitting")}
+                      </>
+                    ) : (
+                      <>
+                        <Send className="mr-2 h-4 w-4" />
+                        {t("nav.submit")}
+                      </>
+                    )}
+                  </span>
+                )}
+              </Button>
+            </div>
           </CardFooter>
         </Card>
 
