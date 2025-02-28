@@ -22,7 +22,7 @@ const IntroStep: React.FC<IntroStepProps> = ({ onNext }) => {
         <CardContent className="p-8 card-gradient">
           <div className="space-y-6">
             <div className="text-center mb-6">
-              <h3 className="text-xl font-medium text-gray-800 mb-3">Orta Ölçekli Şirketler İçin Yapay Zeka Hazırlık Değerlendirmesi</h3>
+              <h3 className="text-xl font-medium text-gray-800 mb-3">Şirketler İçin Yapay Zeka Hazırlık Değerlendirmesi</h3>
               <p className="text-gray-600">
                 Bu anket, şirketinizin yapay zeka stratejisini ve hazırlık durumunu değerlendirmenize yardımcı olacaktır.
               </p>
