@@ -24,6 +24,8 @@ interface CompanyInfoStepProps {
   setSector: (value: string) => void;
   industry: string;
   setIndustry: (value: string) => void;
+  country: string;
+  setCountry: (value: string) => void;
   onNext: () => void;
   onPrevious: () => void;
 }
@@ -43,11 +45,13 @@ const CompanyInfoStep = ({
   setSector,
   industry,
   setIndustry,
+  country,
+  setCountry,
   onNext,
   onPrevious,
 }: CompanyInfoStepProps) => {
   const [formValid, setFormValid] = useState(false);
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
 
   // Define sector options with translations
   const sectorOptions = [
@@ -74,6 +78,29 @@ const CompanyInfoStep = ({
     { value: "other", label: t("industry.other") },
   ];
 
+  // Define country options with translations
+  const countryOptions = [
+    { value: "turkey", label: t("country.turkey") },
+    { value: "usa", label: t("country.usa") },
+    { value: "uk", label: t("country.uk") },
+    { value: "germany", label: t("country.germany") },
+    { value: "france", label: t("country.france") },
+    { value: "italy", label: t("country.italy") },
+    { value: "spain", label: t("country.spain") },
+    { value: "netherlands", label: t("country.netherlands") },
+    { value: "belgium", label: t("country.belgium") },
+    { value: "switzerland", label: t("country.switzerland") },
+    { value: "sweden", label: t("country.sweden") },
+    { value: "norway", label: t("country.norway") },
+    { value: "finland", label: t("country.finland") },
+    { value: "denmark", label: t("country.denmark") },
+    { value: "greece", label: t("country.greece") },
+    { value: "portugal", label: t("country.portugal") },
+    { value: "austria", label: t("country.austria") },
+    { value: "poland", label: t("country.poland") },
+    { value: "other", label: t("country.other") },
+  ];
+
   useEffect(() => {
     // Check if all required fields are filled
     const isValid = 
@@ -83,10 +110,11 @@ const CompanyInfoStep = ({
       respondentEmail.trim() !== "" && 
       emailError === "" &&
       sector !== "" &&
-      industry !== "";
+      industry !== "" &&
+      country !== "";
     
     setFormValid(isValid);
-  }, [companyName, respondentName, respondentPosition, respondentEmail, emailError, sector, industry]);
+  }, [companyName, respondentName, respondentPosition, respondentEmail, emailError, sector, industry, country]);
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -153,7 +181,7 @@ const CompanyInfoStep = ({
             
             <div className="space-y-2">
               <Label htmlFor="industry">{t("companyInfo.industry")} *</Label>
-              <Select value={industry} onValueChange={setIndustry}>
+              <Select value={industry} on ValueChange={setIndustry}>
                 <SelectTrigger>
                   <SelectValue placeholder={t("companyInfo.industryPlaceholder")} />
                 </SelectTrigger>
@@ -166,6 +194,22 @@ const CompanyInfoStep = ({
                 </SelectContent>
               </Select>
             </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="country">{t("companyInfo.country")} *</Label>
+            <Select value={country} onValueChange={setCountry}>
+              <SelectTrigger>
+                <SelectValue placeholder={t("companyInfo.countryPlaceholder")} />
+              </SelectTrigger>
+              <SelectContent>
+                {countryOptions.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
           
           <div className="space-y-2">

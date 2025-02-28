@@ -1,4 +1,3 @@
-
 import React, { createContext, useState, useContext, ReactNode } from 'react';
 
 export type Language = 'en' | 'tr';
@@ -51,6 +50,8 @@ export const translations = {
     "companyInfo.positionPlaceholder": "Enter your position in the company",
     "companyInfo.email": "Your Email Address",
     "companyInfo.emailPlaceholder": "Enter your email address",
+    "companyInfo.country": "Country",
+    "companyInfo.countryPlaceholder": "Select a country",
     
     // Sector options
     "sector.private": "Private Sector",
@@ -72,6 +73,27 @@ export const translations = {
     "industry.construction": "Construction",
     "industry.agriculture": "Agriculture",
     "industry.other": "Other",
+    
+    // Country options
+    "country.turkey": "Turkey",
+    "country.usa": "United States",
+    "country.uk": "United Kingdom",
+    "country.germany": "Germany",
+    "country.france": "France",
+    "country.italy": "Italy",
+    "country.spain": "Spain",
+    "country.netherlands": "Netherlands",
+    "country.belgium": "Belgium",
+    "country.switzerland": "Switzerland",
+    "country.sweden": "Sweden",
+    "country.norway": "Norway",
+    "country.finland": "Finland",
+    "country.denmark": "Denmark",
+    "country.greece": "Greece",
+    "country.portugal": "Portugal",
+    "country.austria": "Austria",
+    "country.poland": "Poland",
+    "country.other": "Other",
     
     // Navigation
     "nav.back": "Back",
@@ -151,6 +173,8 @@ export const translations = {
     "companyInfo.positionPlaceholder": "Şirketteki pozisyonunuzu girin",
     "companyInfo.email": "E-posta Adresiniz",
     "companyInfo.emailPlaceholder": "E-posta adresinizi girin",
+    "companyInfo.country": "Ülke",
+    "companyInfo.countryPlaceholder": "Ülke seçin",
     
     // Sector options
     "sector.private": "Özel Sektör",
@@ -172,6 +196,27 @@ export const translations = {
     "industry.construction": "İnşaat",
     "industry.agriculture": "Tarım",
     "industry.other": "Diğer",
+    
+    // Country options
+    "country.turkey": "Türkiye",
+    "country.usa": "Amerika Birleşik Devletleri",
+    "country.uk": "Birleşik Krallık",
+    "country.germany": "Almanya",
+    "country.france": "Fransa",
+    "country.italy": "İtalya",
+    "country.spain": "İspanya",
+    "country.netherlands": "Hollanda",
+    "country.belgium": "Belçika",
+    "country.switzerland": "İsviçre",
+    "country.sweden": "İsveç",
+    "country.norway": "Norveç",
+    "country.finland": "Finlandiya",
+    "country.denmark": "Danimarka",
+    "country.greece": "Yunanistan",
+    "country.portugal": "Portekiz",
+    "country.austria": "Avusturya",
+    "country.poland": "Polonya",
+    "country.other": "Diğer",
     
     // Navigation
     "nav.back": "Geri",
