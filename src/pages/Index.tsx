@@ -28,7 +28,7 @@ interface SurveyResponse {
 const initialQuestions: SurveyQuestion[] = [
   {
     id: 1,
-    text: "Yönetim ekibimiz, yapay zekanın (YZ) sektörümüze ve iş süreçlerimize etkilerini iyi anlıyor.",
+    text: "Yönetim ekibimiz, yapay zekanın (Yapay Zeka) sektörümüze ve iş süreçlerimize etkilerini iyi anlıyor.",
     answer: null,
     comment: "",
   },
@@ -40,7 +40,7 @@ const initialQuestions: SurveyQuestion[] = [
   },
   {
     id: 3,
-    text: "YZ ile ilgili hedeflerimiz, gelir artırma, müşteri hizmetlerini iyileştirme veya verimliliği artırma gibi temel iş hedeflerimizle uyumlu.",
+    text: "Yapay Zeka ile ilgili hedeflerimiz, gelir artırma, müşteri hizmetlerini iyileştirme veya verimliliği artırma gibi temel iş hedeflerimizle uyumlu.",
     answer: null,
     comment: "",
   },
@@ -52,37 +52,37 @@ const initialQuestions: SurveyQuestion[] = [
   },
   {
     id: 5,
-    text: "Rakiplerimizin ve sektör liderlerinin YZ kullanımını takip ediyor, şu anki durumumuzu ve gelecekteki ihtiyaçlarımızı buna göre değerlendiriyoruz.",
+    text: "Rakiplerimizin ve sektör liderlerinin Yapay Zeka kullanımını takip ediyor, şu anki durumumuzu ve gelecekteki ihtiyaçlarımızı buna göre değerlendiriyoruz.",
     answer: null,
     comment: "",
   },
   {
     id: 6,
-    text: "YZ'nin şirketimize sağlayabileceği faydalar konusunda (örneğin maliyet tasarrufu, yeni ürün fikirleri) gerçekçi beklentilerimiz ve net hedeflerimiz var.",
+    text: "Yapay Zeka'nın şirketimize sağlayabileceği faydalar konusunda (örneğin maliyet tasarrufu, yeni ürün fikirleri) gerçekçi beklentilerimiz ve net hedeflerimiz var.",
     answer: null,
     comment: "",
   },
   {
     id: 7,
-    text: "YZ uygulamalarını hayata geçirmemizi zorlaştıran (sınırlı bütçe, belirsiz mevzuatlar, veri gizliliği endişeleri veya uzman eksikliği gibi) önemli engellerle karşılaşıyoruz.",
+    text: "Yapay Zeka uygulamalarını hayata geçirmemizi zorlaştıran (sınırlı bütçe, belirsiz mevzuatlar, veri gizliliği endişeleri veya uzman eksikliği gibi) önemli engellerle karşılaşıyoruz.",
     answer: null,
     comment: "",
   },
   {
     id: 8,
-    text: "YZ'ye ne kadar hazır olduğumuzu (hangi veri ve teknolojiye sahibiz, nelere ihtiyacımız var vb.) iyi biliyoruz.",
+    text: "Yapay Zeka'ye ne kadar hazır olduğumuzu (hangi veri ve teknolojiye sahibiz, nelere ihtiyacımız var vb.) iyi biliyoruz.",
     answer: null,
     comment: "",
   },
   {
     id: 9,
-    text: "YZ çözümlerini uygulamaya yönelik, zaman çizelgeleri, kaynaklar ve belirli kontrol noktalarını içeren bir yol haritamız var.",
+    text: "Yapay Zeka çözümlerini uygulamaya yönelik, zaman çizelgeleri, kaynaklar ve belirli kontrol noktalarını içeren bir yol haritamız var.",
     answer: null,
     comment: "",
   },
   {
     id: 10,
-    text: "YZ'yi işimizin en az bir alanında (örneğin müşteri destek, üretim, tahminleme) uygulamaya başladık veya çok yakında başlamayı planlıyoruz.",
+    text: "Yapay Zeka'yi işimizin en az bir alanında (örneğin müşteri destek, üretim, tahminleme) uygulamaya başladık veya çok yakında başlamayı planlıyoruz.",
     answer: null,
     comment: "",
   },
@@ -288,7 +288,7 @@ const Index = () => {
       <div className="min-h-screen flex flex-col items-center justify-center px-4 py-12 bg-gradient-to-b from-white to-gray-50">
         <Card className="w-full max-w-2xl animate-fade-in shadow-lg border-0 overflow-hidden">
           <CardHeader className="bg-primary text-white text-center py-8">
-            <CardTitle className="text-2xl font-light tracking-tight">YZ Hazırlık & Strateji Anketi</CardTitle>
+            <CardTitle className="text-2xl font-light tracking-tight">Yapay Zeka Hazırlık & Strateji Anketi</CardTitle>
           </CardHeader>
           <CardContent className="p-8">
             <div className="space-y-6">
@@ -296,7 +296,7 @@ const Index = () => {
                 <div className="inline-flex items-center justify-center p-2 bg-primary/10 text-primary rounded-full mb-4">
                   <HelpCircle className="w-12 h-12" />
                 </div>
-                <h3 className="text-lg font-medium text-gray-700 mb-2">Orta Ölçekli Şirketler İçin YZ Hazırlık Değerlendirmesi</h3>
+                <h3 className="text-lg font-medium text-gray-700 mb-2">Orta Ölçekli Şirketler İçin Yapay Zeka Hazırlık Değerlendirmesi</h3>
                 <p className="text-gray-600">
                   Bu anket, şirketinizin yapay zeka stratejisini ve hazırlık durumunu değerlendirmenize yardımcı olacaktır.
                 </p>
@@ -450,7 +450,7 @@ const Index = () => {
                 <div className="inline-flex items-center justify-center p-3 bg-green-50 text-green-500 rounded-full mb-4">
                   <CheckCircle className="w-12 h-12" />
                 </div>
-                <h3 className="text-lg font-medium text-gray-700 mb-2">YZ Hazırlık Skoru</h3>
+                <h3 className="text-lg font-medium text-gray-700 mb-2">Yapay Zeka Hazırlık Skoru</h3>
                 <div className="text-6xl font-bold text-primary mb-2">{score.percentage}%</div>
                 <div className="w-full bg-gray-200 rounded-full h-4 mb-4">
                   <div 
@@ -545,7 +545,7 @@ const Index = () => {
           </Button>
           <div className="text-center">
             <h1 className="text-2xl font-light tracking-tight text-primary">
-              YZ Hazırlık & Strateji Anketi
+              Yapay Zeka Hazırlık & Strateji Anketi
             </h1>
             <p className="text-gray-500">
               Soru {currentQuestionIndex + 1} / {questions.length}
