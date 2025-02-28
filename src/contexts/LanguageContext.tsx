@@ -52,6 +52,8 @@ export const translations = {
     "companyInfo.emailPlaceholder": "Enter your email address",
     "companyInfo.country": "Country",
     "companyInfo.countryPlaceholder": "Select a country",
+    "companyInfo.privacyConsent": "I understand that my data will not be shared with any third parties and will only be used for the purpose of this survey.",
+    "companyInfo.privacyRequired": "You must agree to the privacy statement to continue.",
     
     // Sector options
     "sector.private": "Private Sector",
@@ -175,6 +177,8 @@ export const translations = {
     "companyInfo.emailPlaceholder": "E-posta adresinizi girin",
     "companyInfo.country": "Ülke",
     "companyInfo.countryPlaceholder": "Ülke seçin",
+    "companyInfo.privacyConsent": "Verilerimin üçüncü taraflarla paylaşılmayacağını ve yalnızca bu anket amacıyla kullanılacağını anlıyorum.",
+    "companyInfo.privacyRequired": "Devam etmek için gizlilik beyanını kabul etmelisiniz.",
     
     // Sector options
     "sector.private": "Özel Sektör",

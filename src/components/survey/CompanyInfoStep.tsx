@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
 import { validateEmail } from "@/utils/surveyUtils";
 import EDTLogo from "./EDTLogo";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -50,6 +51,8 @@ const CompanyInfoStep = ({
   onPrevious,
 }: CompanyInfoStepProps) => {
   const [formValid, setFormValid] = useState(false);
+  const [privacyConsent, setPrivacyConsent] = useState(false);
+  const [privacyError, setPrivacyError] = useState("");
   const { t } = useLanguage();
 
   const sectorOptions = [
@@ -106,10 +109,11 @@ const CompanyInfoStep = ({
       emailError === "" &&
       sector !== "" &&
       industry !== "" &&
-      country !== "";
+      country !== "" &&
+      privacyConsent;
     
     setFormValid(isValid);
-  }, [companyName, respondentName, respondentPosition, respondentEmail, emailError, sector, industry, country]);
+  }, [companyName, respondentName, respondentPosition, respondentEmail, emailError, sector, industry, country, privacyConsent]);
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -128,8 +132,20 @@ const CompanyInfoStep = ({
   };
 
   const handleNext = () => {
+    if (!privacyConsent) {
+      setPrivacyError(t("companyInfo.privacyRequired"));
+      return;
+    }
+    
     if (formValid) {
       onNext();
+    }
+  };
+
+  const handlePrivacyChange = (checked: boolean) => {
+    setPrivacyConsent(checked);
+    if (checked) {
+      setPrivacyError("");
     }
   };
 
@@ -241,6 +257,24 @@ const CompanyInfoStep = ({
               className={emailError ? "border-red-500" : ""}
             />
             {emailError && <p className="text-red-500 text-sm">{emailError}</p>}
+          </div>
+
+          <div className="flex items-start space-x-2 mt-4 pt-2 border-t border-gray-200">
+            <Checkbox 
+              id="privacyConsent" 
+              checked={privacyConsent}
+              onCheckedChange={handlePrivacyChange}
+              className="mt-1"
+            />
+            <div className="space-y-1">
+              <Label 
+                htmlFor="privacyConsent" 
+                className="font-normal text-sm text-gray-700"
+              >
+                {t("companyInfo.privacyConsent")} *
+              </Label>
+              {privacyError && <p className="text-red-500 text-sm">{privacyError}</p>}
+            </div>
           </div>
         </CardContent>
         <CardFooter className="flex justify-between">
