@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Card, CardHeader, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -18,7 +19,7 @@ const IntroStep: React.FC<IntroStepProps> = ({ onNext }) => {
         <CardHeader className="survey-header text-white text-center py-8">
           <div className="flex justify-center my-4">
             <img 
-              src="/lovable-uploads/fa51bb32-979a-4b4e-bac6-a941e000b9c9.png" 
+              src="/lovable-uploads/96292be1-a06e-44fa-a950-89c9b4a3f010.png" 
               alt="EDT Center Logo" 
               className="w-auto h-auto"
               style={{ 
