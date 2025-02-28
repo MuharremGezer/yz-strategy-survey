@@ -12,7 +12,7 @@ interface IntroStepProps {
 }
 
 const IntroStep: React.FC<IntroStepProps> = ({ onNext }) => {
-  const { language, setLanguage, t } = useLanguage();
+  const { t } = useLanguage();
 
   return (
     <div className="page-background flex flex-col items-center justify-center px-4 py-12">
@@ -20,25 +20,6 @@ const IntroStep: React.FC<IntroStepProps> = ({ onNext }) => {
         <CardHeader className="survey-header text-white text-center py-8">
           <EDTLogo />
           <CardTitle className="text-2xl font-light tracking-tight">{t("survey.title")}</CardTitle>
-          
-          <div className="mt-4 flex justify-center space-x-4">
-            <Button 
-              variant={language === 'tr' ? "default" : "outline"} 
-              size="sm"
-              onClick={() => setLanguage('tr')}
-              className="font-medium text-sm min-w-[80px] bg-opacity-90 hover:bg-opacity-100"
-            >
-              {t("language.tr")}
-            </Button>
-            <Button 
-              variant={language === 'en' ? "default" : "outline"} 
-              size="sm"
-              onClick={() => setLanguage('en')}
-              className="font-medium text-sm min-w-[80px] bg-opacity-90 hover:bg-opacity-100"
-            >
-              {t("language.en")}
-            </Button>
-          </div>
         </CardHeader>
         <CardContent className="p-8 card-gradient">
           <div className="space-y-6">
