@@ -15,27 +15,33 @@ export type Database = {
           company_name: string | null
           created_at: string | null
           id: string
+          industry: string | null
           respondent_email: string | null
           respondent_name: string | null
           respondent_position: string | null
+          sector: string | null
         }
         Insert: {
           answers: Json
           company_name?: string | null
           created_at?: string | null
           id?: string
+          industry?: string | null
           respondent_email?: string | null
           respondent_name?: string | null
           respondent_position?: string | null
+          sector?: string | null
         }
         Update: {
           answers?: Json
           company_name?: string | null
           created_at?: string | null
           id?: string
+          industry?: string | null
           respondent_email?: string | null
           respondent_name?: string | null
           respondent_position?: string | null
+          sector?: string | null
         }
         Relationships: []
       }
