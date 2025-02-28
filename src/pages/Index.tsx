@@ -325,49 +325,62 @@ const Index = () => {
 
   const score = calculateScore();
 
+  // Logo component used across all pages
+  const EDTLogo = () => (
+    <div className="flex justify-center mb-6">
+      <img 
+        src="/lovable-uploads/67234d0b-7da2-45c2-b5e3-36236b60aefc.png" 
+        alt="EDT Center Logo" 
+        className="edt-logo"
+      />
+    </div>
+  );
+
   // Intro screen
   if (currentStep === Step.INTRO) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center px-4 py-12 bg-gradient-to-b from-white to-gray-50">
-        <Card className="w-full max-w-2xl animate-fade-in shadow-lg border-0 overflow-hidden">
-          <CardHeader className="bg-primary text-white text-center py-8">
+      <div className="page-background flex flex-col items-center justify-center px-4 py-12">
+        <Card className="w-full max-w-2xl animate-fade-in shadow-xl border-0 overflow-hidden">
+          <CardHeader className="survey-header text-white text-center py-8">
+            <EDTLogo />
             <CardTitle className="text-2xl font-light tracking-tight">Yapay Zeka Hazırlık & Strateji Anketi</CardTitle>
           </CardHeader>
-          <CardContent className="p-8">
+          <CardContent className="p-8 card-gradient">
             <div className="space-y-6">
               <div className="text-center mb-6">
-                <div className="inline-flex items-center justify-center p-2 bg-primary/10 text-primary rounded-full mb-4">
-                  <HelpCircle className="w-12 h-12" />
+                <div className="inline-flex items-center justify-center p-3 bg-blue-50 text-blue-700 rounded-full mb-4">
+                  <HelpCircle className="w-10 h-10" />
                 </div>
-                <h3 className="text-lg font-medium text-gray-700 mb-2">Orta Ölçekli Şirketler İçin Yapay Zeka Hazırlık Değerlendirmesi</h3>
+                <h3 className="text-xl font-medium text-gray-800 mb-3">Orta Ölçekli Şirketler İçin Yapay Zeka Hazırlık Değerlendirmesi</h3>
                 <p className="text-gray-600">
                   Bu anket, şirketinizin yapay zeka stratejisini ve hazırlık durumunu değerlendirmenize yardımcı olacaktır.
                 </p>
               </div>
               
-              <div className="bg-primary/5 p-6 rounded-lg border border-primary/10">
-                <h4 className="font-medium text-primary mb-3">Anketi nasıl doldurmalısınız?</h4>
-                <p className="text-gray-600 mb-4">
+              <div className="bg-blue-50 p-6 rounded-lg border border-blue-100">
+                <h4 className="font-medium text-blue-800 mb-3">Anketi nasıl doldurmalısınız?</h4>
+                <p className="text-gray-700 mb-4">
                   Aşağıdaki ifadeleri okuyun ve şirketiniz için ne ölçüde geçerli olduğunu 1'den 6'ya kadar puanlayın.
                 </p>
-                <div className="grid grid-cols-3 gap-2 mb-4">
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-4">
                   {ratingLabels.map((item) => (
-                    <div key={item.value} className="flex items-center text-sm">
-                      <span className="font-semibold mr-2">{item.value} =</span>
-                      <span className="text-gray-600">{item.label}</span>
+                    <div key={item.value} className="flex items-center bg-white p-2 rounded-md text-sm shadow-sm">
+                      <span className="font-semibold text-blue-700 mr-2">{item.value}</span>
+                      <span className="text-gray-700">{item.label}</span>
                     </div>
                   ))}
                 </div>
-                <p className="text-gray-600 text-sm italic">
+                <p className="text-gray-600 text-sm italic mt-4">
                   Her soruya isteğe bağlı olarak yorum ekleyebilirsiniz.
                 </p>
               </div>
             </div>
           </CardContent>
-          <CardFooter className="px-8 py-4 bg-gray-50 flex justify-end">
+          <CardFooter className="px-8 py-6 bg-gray-50 flex justify-end">
             <Button 
               onClick={handleNext}
-              className="bg-primary text-white hover:bg-primary/90"
+              className="bg-blue-700 hover:bg-blue-800 text-white"
+              size="lg"
             >
               <span className="flex items-center">
                 Başla
@@ -383,20 +396,21 @@ const Index = () => {
   // Company info screen
   if (currentStep === Step.COMPANY_INFO) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center px-4 py-12 bg-gradient-to-b from-white to-gray-50">
-        <Card className="w-full max-w-2xl animate-fade-in shadow-lg border-0 overflow-hidden">
-          <CardHeader className="bg-primary text-white text-center py-8">
+      <div className="page-background flex flex-col items-center justify-center px-4 py-12">
+        <Card className="w-full max-w-2xl animate-fade-in shadow-xl border-0 overflow-hidden">
+          <CardHeader className="survey-header text-white text-center py-8">
+            <EDTLogo />
             <CardTitle className="text-2xl font-light tracking-tight">Şirket Bilgileri</CardTitle>
           </CardHeader>
-          <CardContent className="p-8">
+          <CardContent className="p-8 card-gradient">
             <div className="space-y-6">
               <div className="flex justify-center mb-6">
-                <div className="inline-flex items-center justify-center p-2 bg-primary/10 text-primary rounded-full">
+                <div className="inline-flex items-center justify-center p-3 bg-blue-50 text-blue-700 rounded-full">
                   <Building className="w-10 h-10" />
                 </div>
               </div>
               
-              <div className="space-y-4">
+              <div className="space-y-5">
                 <div>
                   <label htmlFor="companyName" className="block text-sm font-medium text-gray-700 mb-1">
                     Şirket Adı <span className="text-red-500">*</span>
@@ -410,7 +424,7 @@ const Index = () => {
                       type="text"
                       value={companyName}
                       onChange={(e) => setCompanyName(e.target.value)}
-                      className="w-full pl-10 px-3 py-2.5 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+                      className="w-full pl-10 px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                       placeholder="Şirketinizin adını girin"
                       required
                     />
@@ -433,22 +447,22 @@ const Index = () => {
                         setRespondentEmail(e.target.value);
                         if (emailError) validateEmail(e.target.value);
                       }}
-                      className={`w-full pl-10 px-3 py-2.5 border ${
-                        emailError ? "border-red-500" : "border-gray-300"
-                      } rounded-md focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors`}
+                      className={`w-full pl-10 px-4 py-3 border ${
+                        emailError ? "border-red-500 focus:ring-red-500 focus:border-red-500" : "border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                      } rounded-md focus:outline-none focus:ring-2 transition-colors`}
                       placeholder="Kurumsal e-posta adresinizi girin"
                       required
                     />
                   </div>
                   {emailError && (
-                    <p className="mt-1 text-sm text-red-500">{emailError}</p>
+                    <p className="mt-1.5 text-sm text-red-600">{emailError}</p>
                   )}
-                  <p className="mt-1 text-xs text-gray-500">
+                  <p className="mt-1.5 text-xs text-gray-500">
                     Lütfen gmail, hotmail vb. kişisel e-posta adresleri kullanmayın.
                   </p>
                 </div>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <div>
                     <label htmlFor="respondentName" className="block text-sm font-medium text-gray-700 mb-1">
                       Yanıtlayan Kişi
@@ -462,7 +476,7 @@ const Index = () => {
                         type="text"
                         value={respondentName}
                         onChange={(e) => setRespondentName(e.target.value)}
-                        className="w-full pl-10 px-3 py-2.5 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+                        className="w-full pl-10 px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                         placeholder="Adınız ve soyadınız"
                       />
                     </div>
@@ -480,7 +494,7 @@ const Index = () => {
                         type="text"
                         value={respondentPosition}
                         onChange={(e) => setRespondentPosition(e.target.value)}
-                        className="w-full pl-10 px-3 py-2.5 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+                        className="w-full pl-10 px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                         placeholder="Şirketteki pozisyonunuz"
                       />
                     </div>
@@ -489,17 +503,20 @@ const Index = () => {
               </div>
             </div>
           </CardContent>
-          <CardFooter className="px-8 py-4 bg-gray-50 flex justify-between">
+          <CardFooter className="px-8 py-6 bg-gray-50 flex justify-between">
             <Button
               variant="outline"
               onClick={handlePrevious}
+              size="lg"
+              className="border-gray-300"
             >
               <ArrowLeft className="mr-2 h-4 w-4" />
               Geri
             </Button>
             <Button 
               onClick={handleNext}
-              className="bg-primary text-white hover:bg-primary/90"
+              className="bg-blue-700 hover:bg-blue-800 text-white"
+              size="lg"
             >
               İleri
               <ArrowRight className="ml-2 h-4 w-4" />
@@ -513,40 +530,46 @@ const Index = () => {
   // Results screen
   if (currentStep === Step.RESULTS) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center px-4 py-12 bg-gradient-to-b from-white to-gray-50">
-        <Card className="w-full max-w-2xl animate-fade-in shadow-lg border-0 overflow-hidden">
-          <CardHeader className="bg-primary text-white text-center py-8">
+      <div className="page-background flex flex-col items-center justify-center px-4 py-12">
+        <Card className="w-full max-w-3xl animate-fade-in shadow-xl border-0 overflow-hidden">
+          <CardHeader className="survey-header text-white text-center py-8">
+            <EDTLogo />
             <CardTitle className="text-2xl font-light tracking-tight">Anket Sonuçlarınız</CardTitle>
           </CardHeader>
-          <CardContent className="p-8">
-            <div className="space-y-6">
-              <div className="text-center mb-6">
-                <div className="inline-flex items-center justify-center p-3 bg-green-50 text-green-500 rounded-full mb-4">
+          <CardContent className="p-8 card-gradient">
+            <div className="space-y-8">
+              <div className="text-center mb-8">
+                <div className="inline-flex items-center justify-center p-4 bg-green-50 text-green-600 rounded-full mb-6">
                   <CheckCircle className="w-12 h-12" />
                 </div>
-                <h3 className="text-lg font-medium text-gray-700 mb-2">Yapay Zeka Hazırlık Skoru</h3>
-                <div className="text-6xl font-bold text-primary mb-2">{score.percentage}%</div>
-                <div className="w-full bg-gray-200 rounded-full h-4 mb-4">
+                <h3 className="text-2xl font-medium text-gray-800 mb-4">Yapay Zeka Hazırlık Skoru</h3>
+                <div className="text-7xl font-bold text-blue-700 mb-4">{score.percentage}%</div>
+                <div className="w-full bg-gray-200 rounded-full h-6 mb-6 overflow-hidden">
                   <div 
-                    className="bg-primary h-4 rounded-full transition-all duration-1000" 
+                    className="bg-blue-700 h-6 rounded-full transition-all duration-1000" 
                     style={{ width: `${score.percentage}%` }}
                   ></div>
                 </div>
-                <p className="mt-2 text-gray-600">
-                  Toplam Puan: {score.total} / {questions.length * 6} (Ortalama: {score.average})
-                </p>
+                <div className="inline-block bg-blue-50 px-5 py-3 rounded-lg">
+                  <p className="text-gray-700">
+                    <span className="font-semibold">Toplam Puan:</span> {score.total} / {questions.length * 6}
+                  </p>
+                  <p className="text-gray-700">
+                    <span className="font-semibold">Ortalama:</span> {score.average}
+                  </p>
+                </div>
               </div>
               
               <Separator className="my-8" />
               
               <div className="space-y-6">
-                <h3 className="text-lg font-medium text-center mb-4">Yanıtlarınızın Detayları</h3>
+                <h3 className="text-xl font-medium text-center mb-6">Yanıtlarınızın Detayları</h3>
                 
-                <div className="grid gap-4">
+                <div className="grid gap-5">
                   {questions.map((question) => (
-                    <div key={question.id} className="p-5 rounded-lg bg-gray-50 border border-gray-100">
+                    <div key={question.id} className="p-5 rounded-lg bg-white shadow-sm border border-gray-100">
                       <div className="flex items-start mb-3">
-                        <span className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary font-medium mr-3 flex-shrink-0">
+                        <span className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-700 font-medium mr-3 flex-shrink-0">
                           {question.id}
                         </span>
                         <h4 className="text-gray-800 font-medium">
@@ -555,7 +578,7 @@ const Index = () => {
                       </div>
                       <div className="pl-11">
                         <div className="flex items-center">
-                          <span className="font-semibold text-primary text-lg mr-2">
+                          <span className="font-semibold text-blue-700 text-lg mr-2">
                             {question.answer}
                           </span>
                           <span className="text-gray-600">
@@ -563,7 +586,7 @@ const Index = () => {
                           </span>
                         </div>
                         {question.comment && (
-                          <div className="mt-2 text-gray-600 italic bg-white p-3 rounded border border-gray-100">
+                          <div className="mt-2 text-gray-600 italic bg-gray-50 p-3 rounded border border-gray-100">
                             "{question.comment}"
                           </div>
                         )}
@@ -573,11 +596,12 @@ const Index = () => {
                 </div>
               </div>
               
-              <div className="mt-8 text-center">
+              <div className="mt-10 text-center">
                 <Button 
                   onClick={() => window.print()}
                   variant="outline" 
-                  className="mr-2"
+                  className="mr-4 border-gray-300"
+                  size="lg"
                 >
                   Sonuçları Yazdır
                 </Button>
@@ -594,7 +618,8 @@ const Index = () => {
                     setEmailError("");
                     setSurveyId(null);
                   }}
-                  className="bg-primary text-white hover:bg-primary/90"
+                  className="bg-blue-700 hover:bg-blue-800 text-white"
+                  size="lg"
                 >
                   Yeni Anket Başlat
                 </Button>
@@ -608,44 +633,47 @@ const Index = () => {
 
   // Questions screen
   return (
-    <div className="min-h-screen flex flex-col items-center px-4 py-12 bg-gradient-to-b from-white to-gray-50">
+    <div className="page-background flex flex-col items-center px-4 py-12">
       <div className="w-full max-w-3xl animate-fade-in mb-8">
         <div className="flex justify-between items-center mb-6">
           <Button 
             variant="outline" 
             onClick={handlePrevious}
-            className="flex items-center"
+            className="flex items-center border-gray-300"
+            size="lg"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
             {currentQuestionIndex === 0 ? 'Şirket Bilgileri' : 'Önceki Soru'}
           </Button>
-          <div className="text-center">
-            <h1 className="text-2xl font-light tracking-tight text-primary">
-              Yapay Zeka Hazırlık & Strateji Anketi
-            </h1>
-            <p className="text-gray-500">
-              Soru {currentQuestionIndex + 1} / {questions.length}
-            </p>
-          </div>
+          <EDTLogo />
           <div className="invisible">
-            <Button variant="outline">
+            <Button variant="outline" size="lg">
               Placeholder
             </Button>
           </div>
         </div>
 
+        <div className="text-center mb-6">
+          <h1 className="text-2xl font-light tracking-tight text-gray-800">
+            Yapay Zeka Hazırlık & Strateji Anketi
+          </h1>
+          <p className="text-gray-600 mt-2">
+            Soru {currentQuestionIndex + 1} / {questions.length}
+          </p>
+        </div>
+
         <div className="mb-6">
-          <div className="flex justify-between text-sm text-gray-500 mb-2">
+          <div className="flex justify-between text-sm text-gray-600 mb-2">
             <span>İlerleme</span>
             <span>{Math.round(progress)}%</span>
           </div>
-          <Progress value={progress} className="h-2" />
+          <Progress value={progress} className="h-3" />
         </div>
 
         <Card className="mb-8 shadow-lg border-0 overflow-hidden">
-          <CardHeader className="bg-primary/5 py-5">
+          <CardHeader className="bg-blue-50 py-6">
             <div className="flex items-start">
-              <span className="flex items-center justify-center w-10 h-10 rounded-full bg-primary/10 text-primary font-medium mr-4 flex-shrink-0">
+              <span className="flex items-center justify-center w-10 h-10 rounded-full bg-blue-100 text-blue-700 font-medium mr-4 flex-shrink-0">
                 {questions[currentQuestionIndex].id}
               </span>
               <CardTitle className="text-xl font-medium text-gray-800">
@@ -653,22 +681,22 @@ const Index = () => {
               </CardTitle>
             </div>
           </CardHeader>
-          <CardContent className="p-6">
+          <CardContent className="p-6 card-gradient">
             <div className="space-y-6">
-              <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
+              <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
                 {ratingLabels.map((rating) => (
                   <button
                     key={rating.value}
                     type="button"
                     onClick={() => handleRatingSelect(questions[currentQuestionIndex].id, rating.value)}
-                    className={`rating-option flex flex-col items-center justify-center p-3 border rounded-md transition-all ${
+                    className={`rating-option flex flex-col items-center justify-center p-4 border rounded-lg transition-all ${
                       questions[currentQuestionIndex].answer === rating.value
-                        ? "rating-option-selected bg-primary/5 border-primary"
+                        ? "rating-option-selected bg-blue-50 border-blue-500"
                         : "hover:bg-gray-50 border-gray-200"
                     }`}
                   >
                     <span className={`text-2xl font-semibold ${
-                      questions[currentQuestionIndex].answer === rating.value ? "text-primary" : "text-gray-700"
+                      questions[currentQuestionIndex].answer === rating.value ? "text-blue-700" : "text-gray-700"
                     }`}>
                       {rating.value}
                     </span>
@@ -679,7 +707,7 @@ const Index = () => {
                 ))}
               </div>
 
-              <div className="mt-6">
+              <div className="mt-8">
                 <label
                   htmlFor={`comment-${questions[currentQuestionIndex].id}`}
                   className="block text-sm font-medium text-gray-700 mb-2"
@@ -691,19 +719,20 @@ const Index = () => {
                   placeholder="Örnek veya ek açıklama ekleyin..."
                   value={questions[currentQuestionIndex].comment}
                   onChange={(e) => handleCommentChange(questions[currentQuestionIndex].id, e.target.value)}
-                  className="w-full"
+                  className="w-full min-h-[100px]"
                 />
               </div>
             </div>
           </CardContent>
-          <CardFooter className="px-6 py-4 bg-gray-50 flex justify-between items-center">
-            <div className="text-sm text-gray-500">
+          <CardFooter className="px-6 py-5 bg-gray-50 flex justify-between items-center">
+            <div className="text-sm text-gray-500 bg-white px-3 py-2 rounded-md border border-gray-200">
               {currentQuestionIndex + 1} / {questions.length}
             </div>
             <Button 
               onClick={handleNext}
-              className="bg-primary text-white hover:bg-primary/90"
+              className="bg-blue-700 hover:bg-blue-800 text-white"
               disabled={questions[currentQuestionIndex].answer === null}
+              size="lg"
             >
               {currentQuestionIndex < questions.length - 1 ? (
                 <span className="flex items-center">
