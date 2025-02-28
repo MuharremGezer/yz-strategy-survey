@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -115,9 +114,14 @@
 }
 
 .edt-logo {
-  max-width: 240px;
+  max-width: 300px;
   height: auto;
   background-color: transparent !important;
+  transition: transform 0.3s ease;
+}
+
+.edt-logo:hover {
+  transform: scale(1.05);
 }
 
 .survey-header {
