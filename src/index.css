@@ -117,6 +117,7 @@
 .edt-logo {
   max-width: 240px;
   height: auto;
+  background-color: transparent !important;
 }
 
 .survey-header {
