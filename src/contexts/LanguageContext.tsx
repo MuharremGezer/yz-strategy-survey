@@ -14,6 +14,12 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 // English and Turkish translations
 export const translations = {
   en: {
+    // Landing Page
+    "landing.title": "AI Readiness & Strategy Survey",
+    "landing.welcome": "Welcome to the AI Readiness Assessment",
+    "landing.description": "This survey will help you evaluate your organization's AI readiness level and provide insights for your AI strategy.",
+    "landing.start_survey": "Start Survey",
+    
     // Intro Step
     "survey.title": "AI Readiness & Strategy Survey",
     "survey.subtitle": "AI Readiness Assessment for Companies",
@@ -106,6 +112,12 @@ export const translations = {
     "language.tr": "Turkish"
   },
   tr: {
+    // Landing Page
+    "landing.title": "Yapay Zeka Hazırlık & Strateji Anketi",
+    "landing.welcome": "Yapay Zeka Hazırlık Değerlendirmesine Hoş Geldiniz",
+    "landing.description": "Bu anket, kuruluşunuzun yapay zeka hazırlık seviyesini değerlendirmenize ve yapay zeka stratejiniz için içgörüler sağlamanıza yardımcı olacaktır.",
+    "landing.start_survey": "Ankete Başla",
+    
     // Intro Step
     "survey.title": "Yapay Zeka Hazırlık & Strateji Anketi",
     "survey.subtitle": "Şirketler İçin Yapay Zeka Hazırlık Değerlendirmesi",
