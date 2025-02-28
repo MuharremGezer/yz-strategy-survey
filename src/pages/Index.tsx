@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Step, SurveyQuestion } from "@/types/survey";
 import { initialQuestions } from "@/data/initialQuestions";
 import { calculateScore } from "@/utils/surveyUtils";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 // Import components
 import IntroStep from "@/components/survey/IntroStep";
@@ -13,6 +14,7 @@ import QuestionsStep from "@/components/survey/QuestionsStep";
 import ResultsStep from "@/components/survey/ResultsStep";
 
 const Index = () => {
+  const { t } = useLanguage();
   const [questions, setQuestions] = useState<SurveyQuestion[]>(initialQuestions);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [submitted, setSubmitted] = useState(false);
@@ -113,8 +115,8 @@ const Index = () => {
       if (error) {
         console.error("Error saving survey:", error);
         toast({
-          title: "Hata",
-          description: "Anket kaydedilirken bir hata oluştu. Lütfen tekrar deneyin.",
+          title: t("error.saving_survey"),
+          description: t("error.saving_survey"),
           variant: "destructive",
         });
         setSubmitting(false);
@@ -130,8 +132,8 @@ const Index = () => {
     } catch (error) {
       console.error("Exception saving survey:", error);
       toast({
-        title: "Hata",
-        description: "Anket kaydedilirken bir hata oluştu. Lütfen tekrar deneyin.",
+        title: t("error.saving_survey"),
+        description: t("error.saving_survey"),
         variant: "destructive",
       });
       setSubmitting(false);
@@ -144,8 +146,8 @@ const Index = () => {
     
     if (unansweredQuestions.length > 0) {
       toast({
-        title: "Eksik Yanıtlar",
-        description: `Lütfen tüm soruları yanıtlayın. ${unansweredQuestions.length} soru yanıtlanmamış.`,
+        title: t("error.unanswered_questions").replace("{count}", unansweredQuestions.length.toString()),
+        description: t("error.unanswered_questions").replace("{count}", unansweredQuestions.length.toString()),
         variant: "destructive",
       });
       
@@ -168,8 +170,8 @@ const Index = () => {
       setCurrentStep(Step.RESULTS);
       setSubmitted(true);
       toast({
-        title: "Anket Başarıyla Gönderildi",
-        description: "Katılımınız için teşekkür ederiz!",
+        title: t("success.survey_submitted"),
+        description: t("success.thank_you"),
       });
     }
     

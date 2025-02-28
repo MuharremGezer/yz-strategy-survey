@@ -7,6 +7,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { validateEmail } from "@/utils/surveyUtils";
 import EDTLogo from "./EDTLogo";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface CompanyInfoStepProps {
   companyName: string;
@@ -27,31 +28,6 @@ interface CompanyInfoStepProps {
   onPrevious: () => void;
 }
 
-// Define sector options
-const sectorOptions = [
-  { value: "private", label: "Özel Sektör" },
-  { value: "public", label: "Kamu" },
-  { value: "nonprofit", label: "Sivil Toplum Kuruluşu" },
-  { value: "academic", label: "Akademik" },
-  { value: "other", label: "Diğer" },
-];
-
-// Define industry options
-const industryOptions = [
-  { value: "technology", label: "Teknoloji" },
-  { value: "finance", label: "Finans" },
-  { value: "healthcare", label: "Sağlık" },
-  { value: "education", label: "Eğitim" },
-  { value: "manufacturing", label: "Üretim" },
-  { value: "retail", label: "Perakende" },
-  { value: "energy", label: "Enerji" },
-  { value: "transportation", label: "Ulaşım" },
-  { value: "telecom", label: "Telekomünikasyon" },
-  { value: "construction", label: "İnşaat" },
-  { value: "agriculture", label: "Tarım" },
-  { value: "other", label: "Diğer" },
-];
-
 const CompanyInfoStep = ({
   companyName,
   setCompanyName,
@@ -71,6 +47,32 @@ const CompanyInfoStep = ({
   onPrevious,
 }: CompanyInfoStepProps) => {
   const [formValid, setFormValid] = useState(false);
+  const { t } = useLanguage();
+
+  // Define sector options with translations
+  const sectorOptions = [
+    { value: "private", label: t("sector.private") },
+    { value: "public", label: t("sector.public") },
+    { value: "nonprofit", label: t("sector.nonprofit") },
+    { value: "academic", label: t("sector.academic") },
+    { value: "other", label: t("sector.other") },
+  ];
+
+  // Define industry options with translations
+  const industryOptions = [
+    { value: "technology", label: t("industry.technology") },
+    { value: "finance", label: t("industry.finance") },
+    { value: "healthcare", label: t("industry.healthcare") },
+    { value: "education", label: t("industry.education") },
+    { value: "manufacturing", label: t("industry.manufacturing") },
+    { value: "retail", label: t("industry.retail") },
+    { value: "energy", label: t("industry.energy") },
+    { value: "transportation", label: t("industry.transportation") },
+    { value: "telecom", label: t("industry.telecom") },
+    { value: "construction", label: t("industry.construction") },
+    { value: "agriculture", label: t("industry.agriculture") },
+    { value: "other", label: t("industry.other") },
+  ];
 
   useEffect(() => {
     // Check if all required fields are filled
@@ -117,27 +119,27 @@ const CompanyInfoStep = ({
       <Card>
         <CardHeader>
           <CardTitle className="text-center text-xl md:text-2xl">
-            Şirket Bilgileri
+            {t("companyInfo.title")}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="companyName">Şirket Adı *</Label>
+            <Label htmlFor="companyName">{t("companyInfo.companyName")} *</Label>
             <Input
               id="companyName"
               value={companyName}
               onChange={(e) => setCompanyName(e.target.value)}
-              placeholder="Şirketinizin adını girin"
+              placeholder={t("companyInfo.companyNamePlaceholder")}
               required
             />
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="sector">Sektör *</Label>
+              <Label htmlFor="sector">{t("companyInfo.sector")} *</Label>
               <Select value={sector} onValueChange={setSector}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Sektör seçin" />
+                  <SelectValue placeholder={t("companyInfo.sectorPlaceholder")} />
                 </SelectTrigger>
                 <SelectContent>
                   {sectorOptions.map((option) => (
@@ -150,10 +152,10 @@ const CompanyInfoStep = ({
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="industry">Endüstri *</Label>
+              <Label htmlFor="industry">{t("companyInfo.industry")} *</Label>
               <Select value={industry} onValueChange={setIndustry}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Endüstri seçin" />
+                  <SelectValue placeholder={t("companyInfo.industryPlaceholder")} />
                 </SelectTrigger>
                 <SelectContent>
                   {industryOptions.map((option) => (
@@ -167,35 +169,35 @@ const CompanyInfoStep = ({
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="respondentName">Adınız *</Label>
+            <Label htmlFor="respondentName">{t("companyInfo.respondentName")} *</Label>
             <Input
               id="respondentName"
               value={respondentName}
               onChange={(e) => setRespondentName(e.target.value)}
-              placeholder="Adınızı girin"
+              placeholder={t("companyInfo.respondentNamePlaceholder")}
               required
             />
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="respondentPosition">Pozisyonunuz *</Label>
+            <Label htmlFor="respondentPosition">{t("companyInfo.position")} *</Label>
             <Input
               id="respondentPosition"
               value={respondentPosition}
               onChange={(e) => setRespondentPosition(e.target.value)}
-              placeholder="Şirketteki pozisyonunuzu girin"
+              placeholder={t("companyInfo.positionPlaceholder")}
               required
             />
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="respondentEmail">E-posta Adresiniz *</Label>
+            <Label htmlFor="respondentEmail">{t("companyInfo.email")} *</Label>
             <Input
               id="respondentEmail"
               type="email"
               value={respondentEmail}
               onChange={handleEmailChange}
-              placeholder="E-posta adresinizi girin"
+              placeholder={t("companyInfo.emailPlaceholder")}
               required
               className={emailError ? "border-red-500" : ""}
             />
@@ -207,13 +209,13 @@ const CompanyInfoStep = ({
             variant="outline" 
             onClick={onPrevious}
           >
-            Geri
+            {t("nav.back")}
           </Button>
           <Button 
             onClick={handleNext} 
             disabled={!formValid}
           >
-            İleri
+            {t("nav.next")}
           </Button>
         </CardFooter>
       </Card>
