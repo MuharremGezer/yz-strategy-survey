@@ -26,6 +26,7 @@ const IntroStep: React.FC<IntroStepProps> = ({ onNext }) => {
               variant={language === 'tr' ? "default" : "outline"} 
               size="sm"
               onClick={() => setLanguage('tr')}
+              className="font-medium text-sm min-w-[80px] bg-opacity-90 hover:bg-opacity-100"
             >
               {t("language.tr")}
             </Button>
@@ -33,6 +34,7 @@ const IntroStep: React.FC<IntroStepProps> = ({ onNext }) => {
               variant={language === 'en' ? "default" : "outline"} 
               size="sm"
               onClick={() => setLanguage('en')}
+              className="font-medium text-sm min-w-[80px] bg-opacity-90 hover:bg-opacity-100"
             >
               {t("language.en")}
             </Button>
