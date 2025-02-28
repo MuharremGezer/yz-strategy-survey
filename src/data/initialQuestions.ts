@@ -92,6 +92,28 @@ export const initialQuestionsEN: SurveyQuestion[] = [
       "Other"
     ],
     selectedOptions: []
+  },
+  {
+    id: 12,
+    text: "Which AI solutions does your organization use? (Select all that apply)",
+    answer: null,
+    comment: "",
+    type: "checkbox",
+    checkboxOptions: [
+      "OpenAI (ChatGPT, GPT-4)",
+      "Google AI (Gemini, Bard)",
+      "Microsoft Copilot",
+      "GitHub Copilot",
+      "Anthropic Claude",
+      "Deepseek",
+      "Meta AI (Llama)",
+      "IBM Watson",
+      "Amazon SageMaker",
+      "HuggingFace models",
+      "Custom in-house AI solutions",
+      "Other"
+    ],
+    selectedOptions: []
   }
 ];
 
@@ -183,6 +205,28 @@ export const initialQuestionsTR: SurveyQuestion[] = [
       "Süreç Otomasyonu",
       "Öneri Sistemleri",
       "Ses Tanıma/Konuşmadan Metne",
+      "Diğer"
+    ],
+    selectedOptions: []
+  },
+  {
+    id: 12,
+    text: "Kurumunuz hangi Yapay Zeka çözümlerini kullanıyor? (Uygun olan tüm seçenekleri işaretleyin)",
+    answer: null,
+    comment: "",
+    type: "checkbox",
+    checkboxOptions: [
+      "OpenAI (ChatGPT, GPT-4)",
+      "Google AI (Gemini, Bard)",
+      "Microsoft Copilot",
+      "GitHub Copilot",
+      "Anthropic Claude",
+      "Deepseek",
+      "Meta AI (Llama)",
+      "IBM Watson",
+      "Amazon SageMaker",
+      "HuggingFace modelleri",
+      "Özel kurum içi Yapay Zeka çözümleri",
       "Diğer"
     ],
     selectedOptions: []
