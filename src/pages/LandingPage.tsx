@@ -3,7 +3,6 @@ import React from "react";
 import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
-import EDTLogo from "@/components/survey/EDTLogo";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Link } from "react-router-dom";
 
@@ -14,7 +13,18 @@ const LandingPage = () => {
     <div className="page-background min-h-screen flex flex-col items-center justify-center px-4 py-12">
       <Card className="w-full max-w-md animate-fade-in shadow-xl border-0 overflow-hidden">
         <CardHeader className="survey-header text-white text-center py-8">
-          <EDTLogo />
+          <div className="flex justify-center my-4">
+            <img 
+              src="/lovable-uploads/fd0e2ddd-4264-4d0d-813b-8b5c24eda938.png" 
+              alt="EDT Center Logo" 
+              className="w-auto h-auto shadow-sm rounded"
+              style={{ 
+                backgroundColor: 'transparent',
+                maxWidth: '350px',
+                minHeight: '90px'
+              }}
+            />
+          </div>
           <div className="mt-4">
             <h2 className="text-2xl font-bold">
               {t("landing.title")}
