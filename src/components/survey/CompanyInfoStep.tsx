@@ -110,7 +110,7 @@ const CompanyInfoStep = ({
 
   return (
     <div className="container max-w-3xl mx-auto py-8">
-      <div className="mb-6 mx-auto">
+      <div className="flex justify-center mb-6">
         <EDTLogo />
       </div>
       
