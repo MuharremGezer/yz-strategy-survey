@@ -18,6 +18,52 @@ interface ResultsStepProps {
 const ResultsStep: React.FC<ResultsStepProps> = ({ questions, score, onStartNewSurvey }) => {
   const { t } = useLanguage();
   
+  const renderQuestionAnswer = (question: SurveyQuestion) => {
+    if (question.type === 'checkbox' && question.selectedOptions && question.selectedOptions.length > 0) {
+      return (
+        <div className="pl-11">
+          <div className="mb-2 font-semibold text-blue-700">
+            {t("results.selected_options")}:
+          </div>
+          <ul className="list-disc pl-5 space-y-1 text-gray-600">
+            {question.selectedOptions.map((option, index) => (
+              <li key={index}>{option}</li>
+            ))}
+          </ul>
+          {question.comment && (
+            <div className="mt-2 text-gray-600 italic bg-gray-50 p-3 rounded border border-gray-100">
+              "{question.comment}"
+            </div>
+          )}
+        </div>
+      );
+    } else if (question.type === 'rating') {
+      return (
+        <div className="pl-11">
+          <div className="flex items-center">
+            <span className="font-semibold text-blue-700 text-lg mr-2">
+              {question.answer}
+            </span>
+            <span className="text-gray-600">
+              ({ratingLabels.find(r => r.value === question.answer)?.label})
+            </span>
+          </div>
+          {question.comment && (
+            <div className="mt-2 text-gray-600 italic bg-gray-50 p-3 rounded border border-gray-100">
+              "{question.comment}"
+            </div>
+          )}
+        </div>
+      );
+    } else {
+      return (
+        <div className="pl-11 text-gray-500 italic">
+          {t("results.no_answer")}
+        </div>
+      );
+    }
+  };
+  
   return (
     <div className="page-background flex flex-col items-center justify-center px-4 py-12">
       <Card className="w-full max-w-3xl animate-fade-in shadow-xl border-0 overflow-hidden">
@@ -65,21 +111,7 @@ const ResultsStep: React.FC<ResultsStepProps> = ({ questions, score, onStartNewS
                         {question.text}
                       </h4>
                     </div>
-                    <div className="pl-11">
-                      <div className="flex items-center">
-                        <span className="font-semibold text-blue-700 text-lg mr-2">
-                          {question.answer}
-                        </span>
-                        <span className="text-gray-600">
-                          ({ratingLabels.find(r => r.value === question.answer)?.label})
-                        </span>
-                      </div>
-                      {question.comment && (
-                        <div className="mt-2 text-gray-600 italic bg-gray-50 p-3 rounded border border-gray-100">
-                          "{question.comment}"
-                        </div>
-                      )}
-                    </div>
+                    {renderQuestionAnswer(question)}
                   </div>
                 ))}
               </div>
