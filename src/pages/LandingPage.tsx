@@ -2,7 +2,7 @@
 import React from "react";
 import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Flag } from "lucide-react";
 import EDTLogo from "@/components/survey/EDTLogo";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Link } from "react-router-dom";
@@ -29,17 +29,29 @@ const LandingPage = () => {
                   variant={language === 'tr' ? "default" : "outline"} 
                   size="lg"
                   onClick={() => setLanguage('tr')}
-                  className="font-medium h-20 text-lg w-full bg-opacity-90 hover:bg-opacity-100"
+                  className="font-medium h-20 text-lg w-full bg-opacity-90 hover:bg-opacity-100 relative"
                 >
-                  {t("language.tr")}
+                  <div className="flex flex-col items-center justify-center">
+                    <div className="flex items-center mb-1">
+                      <Flag className="h-4 w-4 mr-2" />
+                      <span>Türkçe</span>
+                    </div>
+                    <span className="text-xs opacity-70">Turkish</span>
+                  </div>
                 </Button>
                 <Button 
                   variant={language === 'en' ? "default" : "outline"} 
                   size="lg"
                   onClick={() => setLanguage('en')}
-                  className="font-medium h-20 text-lg w-full bg-opacity-90 hover:bg-opacity-100"
+                  className="font-medium h-20 text-lg w-full bg-opacity-90 hover:bg-opacity-100 relative"
                 >
-                  {t("language.en")}
+                  <div className="flex flex-col items-center justify-center">
+                    <div className="flex items-center mb-1">
+                      <Flag className="h-4 w-4 mr-2" />
+                      <span>English</span>
+                    </div>
+                    <span className="text-xs opacity-70">İngilizce</span>
+                  </div>
                 </Button>
               </div>
             </div>
