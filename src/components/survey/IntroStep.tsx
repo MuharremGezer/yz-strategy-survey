@@ -1,10 +1,8 @@
-
 import React from "react";
 import { Card, CardHeader, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { ratingLabels } from "@/data/ratingLabels";
-import EDTLogo from "./EDTLogo";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 interface IntroStepProps {
@@ -18,7 +16,18 @@ const IntroStep: React.FC<IntroStepProps> = ({ onNext }) => {
     <div className="page-background flex flex-col items-center justify-center px-4 py-12">
       <Card className="w-full max-w-2xl animate-fade-in shadow-xl border-0 overflow-hidden">
         <CardHeader className="survey-header text-white text-center py-8">
-          <EDTLogo />
+          <div className="flex justify-center my-4">
+            <img 
+              src="/lovable-uploads/fa51bb32-979a-4b4e-bac6-a941e000b9c9.png" 
+              alt="EDT Center Logo" 
+              className="w-auto h-auto"
+              style={{ 
+                backgroundColor: 'transparent',
+                maxWidth: '350px',
+                minHeight: '90px'
+              }}
+            />
+          </div>
           <CardTitle className="text-2xl font-light tracking-tight">{t("survey.title")}</CardTitle>
         </CardHeader>
         <CardContent className="p-8 card-gradient">
