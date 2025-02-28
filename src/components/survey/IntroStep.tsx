@@ -2,7 +2,7 @@
 import React from "react";
 import { Card, CardHeader, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, HelpCircle } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { RatingLabel } from "@/types/survey";
 import { ratingLabels } from "@/data/ratingLabels";
 import EDTLogo from "./EDTLogo";
@@ -22,9 +22,6 @@ const IntroStep: React.FC<IntroStepProps> = ({ onNext }) => {
         <CardContent className="p-8 card-gradient">
           <div className="space-y-6">
             <div className="text-center mb-6">
-              <div className="inline-flex items-center justify-center p-3 bg-blue-50 text-blue-700 rounded-full mb-4">
-                <HelpCircle className="w-10 h-10" />
-              </div>
               <h3 className="text-xl font-medium text-gray-800 mb-3">Orta Ölçekli Şirketler İçin Yapay Zeka Hazırlık Değerlendirmesi</h3>
               <p className="text-gray-600">
                 Bu anket, şirketinizin yapay zeka stratejisini ve hazırlık durumunu değerlendirmenize yardımcı olacaktır.
