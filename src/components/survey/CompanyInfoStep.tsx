@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { isValidEmail } from "@/utils/surveyUtils";
+import { validateEmail } from "@/utils/surveyUtils";
 import EDTLogo from "./EDTLogo";
 
 interface CompanyInfoStepProps {
@@ -90,8 +90,13 @@ const CompanyInfoStep = ({
     const value = e.target.value;
     setRespondentEmail(value);
     
-    if (value && !isValidEmail(value)) {
-      setEmailError("Lütfen geçerli bir e-posta adresi girin.");
+    if (value) {
+      const validationResult = validateEmail(value);
+      if (!validationResult.isValid) {
+        setEmailError(validationResult.errorMessage);
+      } else {
+        setEmailError("");
+      }
     } else {
       setEmailError("");
     }
@@ -105,7 +110,9 @@ const CompanyInfoStep = ({
 
   return (
     <div className="container max-w-3xl mx-auto py-8">
-      <EDTLogo className="mb-6 mx-auto" />
+      <div className="mb-6 mx-auto">
+        <EDTLogo />
+      </div>
       
       <Card>
         <CardHeader>
