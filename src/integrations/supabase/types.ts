@@ -17,6 +17,7 @@ export type Database = {
           created_at: string | null
           id: string
           industry: string | null
+          language: string | null
           respondent_email: string | null
           respondent_name: string | null
           respondent_position: string | null
@@ -29,6 +30,7 @@ export type Database = {
           created_at?: string | null
           id?: string
           industry?: string | null
+          language?: string | null
           respondent_email?: string | null
           respondent_name?: string | null
           respondent_position?: string | null
@@ -41,6 +43,7 @@ export type Database = {
           created_at?: string | null
           id?: string
           industry?: string | null
+          language?: string | null
           respondent_email?: string | null
           respondent_name?: string | null
           respondent_position?: string | null
