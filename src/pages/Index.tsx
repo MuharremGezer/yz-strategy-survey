@@ -27,6 +27,7 @@ const Index = () => {
   const [emailError, setEmailError] = useState("");
   const [sector, setSector] = useState("");
   const [industry, setIndustry] = useState("");
+  const [country, setCountry] = useState("");
   const [progress, setProgress] = useState(0);
   const [submitting, setSubmitting] = useState(false);
   const [surveyId, setSurveyId] = useState<string | null>(null);
@@ -114,6 +115,7 @@ const Index = () => {
             respondent_email: respondentEmail,
             sector: sector,
             industry: industry,
+            country: country,
             answers: answersAsJson,
             language: language
           }
@@ -199,6 +201,7 @@ const Index = () => {
     setEmailError("");
     setSector("");
     setIndustry("");
+    setCountry("");
     setSurveyId(null);
   };
 
@@ -226,6 +229,8 @@ const Index = () => {
         setSector={setSector}
         industry={industry}
         setIndustry={setIndustry}
+        country={country}
+        setCountry={setCountry}
         onNext={handleNext}
         onPrevious={handlePrevious}
       />

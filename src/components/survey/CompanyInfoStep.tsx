@@ -181,7 +181,7 @@ const CompanyInfoStep = ({
             
             <div className="space-y-2">
               <Label htmlFor="industry">{t("companyInfo.industry")} *</Label>
-              <Select value={industry} on ValueChange={setIndustry}>
+              <Select value={industry} onValueChange={setIndustry}>
                 <SelectTrigger>
                   <SelectValue placeholder={t("companyInfo.industryPlaceholder")} />
                 </SelectTrigger>
