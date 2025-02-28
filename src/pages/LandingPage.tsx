@@ -15,6 +15,14 @@ const LandingPage = () => {
       <Card className="w-full max-w-md animate-fade-in shadow-xl border-0 overflow-hidden">
         <CardHeader className="survey-header text-white text-center py-8">
           <EDTLogo />
+          <div className="mt-4">
+            <h2 className="text-2xl font-bold">
+              {t("landing.title")}
+            </h2>
+            <p className="text-sm mt-1 opacity-80">
+              {language === 'tr' ? "AI Readiness & Strategy Survey" : "Yapay Zeka Hazırlık & Strateji Anketi"}
+            </p>
+          </div>
         </CardHeader>
         
         <CardContent className="p-8 card-gradient">
