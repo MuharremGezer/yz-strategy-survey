@@ -90,15 +90,14 @@ const Index = () => {
     try {
       setSubmitting(true);
       
-      // Cast the supabase client to 'any' to bypass TypeScript's type checking
-      const { data, error } = await (supabase as any)
+      const { data, error } = await supabase
         .from('survey_responses')
         .insert([
           { 
             company_name: companyName,
             respondent_name: respondentName,
             respondent_position: respondentPosition,
-            respondent_email: respondentEmail,
+            respondent_email: respondentEmail, // Make sure this field is included
             answers: questions
           }
         ])
