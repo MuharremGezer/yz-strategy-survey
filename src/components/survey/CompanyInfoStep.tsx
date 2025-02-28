@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -51,9 +50,8 @@ const CompanyInfoStep = ({
   onPrevious,
 }: CompanyInfoStepProps) => {
   const [formValid, setFormValid] = useState(false);
-  const { language, t } = useLanguage();
+  const { t } = useLanguage();
 
-  // Define sector options with translations
   const sectorOptions = [
     { value: "private", label: t("sector.private") },
     { value: "public", label: t("sector.public") },
@@ -62,7 +60,6 @@ const CompanyInfoStep = ({
     { value: "other", label: t("sector.other") },
   ];
 
-  // Define industry options with translations
   const industryOptions = [
     { value: "technology", label: t("industry.technology") },
     { value: "finance", label: t("industry.finance") },
@@ -78,7 +75,6 @@ const CompanyInfoStep = ({
     { value: "other", label: t("industry.other") },
   ];
 
-  // Define country options with translations
   const countryOptions = [
     { value: "turkey", label: t("country.turkey") },
     { value: "usa", label: t("country.usa") },
@@ -102,7 +98,6 @@ const CompanyInfoStep = ({
   ];
 
   useEffect(() => {
-    // Check if all required fields are filled
     const isValid = 
       companyName.trim() !== "" && 
       respondentName.trim() !== "" && 

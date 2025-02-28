@@ -1,11 +1,9 @@
-
 import React, { useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Progress } from "@/components/ui/progress";
 import { ArrowLeft, ArrowRight, Send } from "lucide-react";
-import { toast } from "@/components/ui/use-toast";
 import { SurveyQuestion } from "@/types/survey";
 import { ratingLabels } from "@/data/ratingLabels";
 import EDTLogo from "./EDTLogo";
@@ -44,7 +42,6 @@ const QuestionsStep: React.FC<QuestionsStepProps> = ({
   const questionRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
-    // Initialize refs array
     questionRefs.current = questionRefs.current.slice(0, questions.length);
   }, [questions]);
 
@@ -56,7 +53,6 @@ const QuestionsStep: React.FC<QuestionsStepProps> = ({
         block: "center" 
       });
     } else {
-      // Call the submit handler
       onSubmit();
     }
   };
@@ -235,7 +231,6 @@ const QuestionsStep: React.FC<QuestionsStepProps> = ({
           </CardFooter>
         </Card>
 
-        {/* Hidden references for scrolling */}
         <div className="hidden">
           {questions.map((question, index) => (
             <div key={question.id} ref={el => questionRefs.current[index] = el}></div>
