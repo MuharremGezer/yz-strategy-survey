@@ -2,7 +2,7 @@
 import React from "react";
 import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Flag } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import EDTLogo from "@/components/survey/EDTLogo";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Link } from "react-router-dom";
@@ -21,7 +21,7 @@ const LandingPage = () => {
           <div className="flex flex-col items-center justify-center space-y-6">
             <div className="flex flex-col items-center mb-4 w-full">
               <h3 className="font-medium text-lg text-blue-800 mb-6">
-                {t("language.select")}
+                {t("language.select")} / Select Language
               </h3>
               
               <div className="grid grid-cols-2 gap-4 w-full">
@@ -33,7 +33,11 @@ const LandingPage = () => {
                 >
                   <div className="flex flex-col items-center justify-center">
                     <div className="flex items-center mb-1">
-                      <Flag className="h-4 w-4 mr-2" />
+                      <img 
+                        src="https://flagcdn.com/w40/tr.png" 
+                        alt="Turkish flag" 
+                        className="h-4 w-6 mr-2 object-cover rounded-sm" 
+                      />
                       <span>Türkçe</span>
                     </div>
                     <span className="text-xs opacity-70">Turkish</span>
@@ -47,7 +51,11 @@ const LandingPage = () => {
                 >
                   <div className="flex flex-col items-center justify-center">
                     <div className="flex items-center mb-1">
-                      <Flag className="h-4 w-4 mr-2" />
+                      <img 
+                        src="https://flagcdn.com/w40/gb.png" 
+                        alt="British flag" 
+                        className="h-4 w-6 mr-2 object-cover rounded-sm" 
+                      />
                       <span>English</span>
                     </div>
                     <span className="text-xs opacity-70">İngilizce</span>
