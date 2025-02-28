@@ -5,10 +5,9 @@ import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/componen
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/use-toast";
-import { RadioGroup } from "@/components/ui/radio-group";
 import { Progress } from "@/components/ui/progress";
 import { supabase } from "@/integrations/supabase/client";
-import { Send, CheckCircle } from "lucide-react";
+import { ArrowLeft, ArrowRight, Send, CheckCircle, User, Building, Briefcase, HelpCircle } from "lucide-react";
 
 interface SurveyQuestion {
   id: number;
@@ -98,6 +97,14 @@ const ratingLabels = [
   { value: 6, label: "Tamamen geçerli" },
 ];
 
+// Wizard steps
+enum Step {
+  INTRO,
+  COMPANY_INFO,
+  QUESTIONS,
+  RESULTS
+}
+
 const Index = () => {
   const [questions, setQuestions] = useState<SurveyQuestion[]>(initialQuestions);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -108,6 +115,7 @@ const Index = () => {
   const [progress, setProgress] = useState(0);
   const [submitting, setSubmitting] = useState(false);
   const [surveyId, setSurveyId] = useState<string | null>(null);
+  const [currentStep, setCurrentStep] = useState<Step>(Step.INTRO);
   const questionRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
@@ -136,22 +144,44 @@ const Index = () => {
   };
 
   const handleNext = () => {
-    if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-      questionRefs.current[currentQuestionIndex + 1]?.scrollIntoView({ 
-        behavior: "smooth", 
-        block: "center" 
-      });
+    if (currentStep === Step.INTRO) {
+      setCurrentStep(Step.COMPANY_INFO);
+    } else if (currentStep === Step.COMPANY_INFO) {
+      if (!companyName.trim()) {
+        toast({
+          title: "Uyarı",
+          description: "Lütfen şirket adını giriniz.",
+          variant: "destructive",
+        });
+        return;
+      }
+      setCurrentStep(Step.QUESTIONS);
+    } else if (currentStep === Step.QUESTIONS) {
+      if (currentQuestionIndex < questions.length - 1) {
+        setCurrentQuestionIndex(currentQuestionIndex + 1);
+        questionRefs.current[currentQuestionIndex + 1]?.scrollIntoView({ 
+          behavior: "smooth", 
+          block: "center" 
+        });
+      } else {
+        handleSubmit();
+      }
     }
   };
 
   const handlePrevious = () => {
-    if (currentQuestionIndex > 0) {
-      setCurrentQuestionIndex(currentQuestionIndex - 1);
-      questionRefs.current[currentQuestionIndex - 1]?.scrollIntoView({ 
-        behavior: "smooth", 
-        block: "center" 
-      });
+    if (currentStep === Step.COMPANY_INFO) {
+      setCurrentStep(Step.INTRO);
+    } else if (currentStep === Step.QUESTIONS) {
+      if (currentQuestionIndex > 0) {
+        setCurrentQuestionIndex(currentQuestionIndex - 1);
+        questionRefs.current[currentQuestionIndex - 1]?.scrollIntoView({ 
+          behavior: "smooth", 
+          block: "center" 
+        });
+      } else {
+        setCurrentStep(Step.COMPANY_INFO);
+      }
     }
   };
 
@@ -227,6 +257,7 @@ const Index = () => {
     const success = await saveSurveyToDatabase();
     
     if (success) {
+      setCurrentStep(Step.RESULTS);
       setSubmitted(true);
       toast({
         title: "Anket Başarıyla Gönderildi",
@@ -251,7 +282,162 @@ const Index = () => {
 
   const score = calculateScore();
 
-  if (submitted) {
+  // Intro screen
+  if (currentStep === Step.INTRO) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center px-4 py-12 bg-gradient-to-b from-white to-gray-50">
+        <Card className="w-full max-w-2xl animate-fade-in shadow-lg border-0 overflow-hidden">
+          <CardHeader className="bg-primary text-white text-center py-8">
+            <CardTitle className="text-2xl font-light tracking-tight">YZ Hazırlık & Strateji Anketi</CardTitle>
+          </CardHeader>
+          <CardContent className="p-8">
+            <div className="space-y-6">
+              <div className="text-center mb-6">
+                <div className="inline-flex items-center justify-center p-2 bg-primary/10 text-primary rounded-full mb-4">
+                  <HelpCircle className="w-12 h-12" />
+                </div>
+                <h3 className="text-lg font-medium text-gray-700 mb-2">Orta Ölçekli Şirketler İçin YZ Hazırlık Değerlendirmesi</h3>
+                <p className="text-gray-600">
+                  Bu anket, şirketinizin yapay zeka stratejisini ve hazırlık durumunu değerlendirmenize yardımcı olacaktır.
+                </p>
+              </div>
+              
+              <div className="bg-primary/5 p-6 rounded-lg border border-primary/10">
+                <h4 className="font-medium text-primary mb-3">Anketi nasıl doldurmalısınız?</h4>
+                <p className="text-gray-600 mb-4">
+                  Aşağıdaki ifadeleri okuyun ve şirketiniz için ne ölçüde geçerli olduğunu 1'den 6'ya kadar puanlayın.
+                </p>
+                <div className="grid grid-cols-3 gap-2 mb-4">
+                  {ratingLabels.map((item) => (
+                    <div key={item.value} className="flex items-center text-sm">
+                      <span className="font-semibold mr-2">{item.value} =</span>
+                      <span className="text-gray-600">{item.label}</span>
+                    </div>
+                  ))}
+                </div>
+                <p className="text-gray-600 text-sm italic">
+                  Her soruya isteğe bağlı olarak yorum ekleyebilirsiniz.
+                </p>
+              </div>
+            </div>
+          </CardContent>
+          <CardFooter className="px-8 py-4 bg-gray-50 flex justify-end">
+            <Button 
+              onClick={handleNext}
+              className="bg-primary text-white hover:bg-primary/90"
+            >
+              <span className="flex items-center">
+                Başla
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </span>
+            </Button>
+          </CardFooter>
+        </Card>
+      </div>
+    );
+  }
+
+  // Company info screen
+  if (currentStep === Step.COMPANY_INFO) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center px-4 py-12 bg-gradient-to-b from-white to-gray-50">
+        <Card className="w-full max-w-2xl animate-fade-in shadow-lg border-0 overflow-hidden">
+          <CardHeader className="bg-primary text-white text-center py-8">
+            <CardTitle className="text-2xl font-light tracking-tight">Şirket Bilgileri</CardTitle>
+          </CardHeader>
+          <CardContent className="p-8">
+            <div className="space-y-6">
+              <div className="flex justify-center mb-6">
+                <div className="inline-flex items-center justify-center p-2 bg-primary/10 text-primary rounded-full">
+                  <Building className="w-10 h-10" />
+                </div>
+              </div>
+              
+              <div className="space-y-4">
+                <div>
+                  <label htmlFor="companyName" className="block text-sm font-medium text-gray-700 mb-1">
+                    Şirket Adı <span className="text-red-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <Building className="h-5 w-5 text-gray-400" />
+                    </div>
+                    <input
+                      id="companyName"
+                      type="text"
+                      value={companyName}
+                      onChange={(e) => setCompanyName(e.target.value)}
+                      className="w-full pl-10 px-3 py-2.5 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+                      placeholder="Şirketinizin adını girin"
+                      required
+                    />
+                  </div>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label htmlFor="respondentName" className="block text-sm font-medium text-gray-700 mb-1">
+                      Yanıtlayan Kişi
+                    </label>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <User className="h-5 w-5 text-gray-400" />
+                      </div>
+                      <input
+                        id="respondentName"
+                        type="text"
+                        value={respondentName}
+                        onChange={(e) => setRespondentName(e.target.value)}
+                        className="w-full pl-10 px-3 py-2.5 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+                        placeholder="Adınız ve soyadınız"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label htmlFor="respondentPosition" className="block text-sm font-medium text-gray-700 mb-1">
+                      Pozisyon
+                    </label>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <Briefcase className="h-5 w-5 text-gray-400" />
+                      </div>
+                      <input
+                        id="respondentPosition"
+                        type="text"
+                        value={respondentPosition}
+                        onChange={(e) => setRespondentPosition(e.target.value)}
+                        className="w-full pl-10 px-3 py-2.5 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+                        placeholder="Şirketteki pozisyonunuz"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+          <CardFooter className="px-8 py-4 bg-gray-50 flex justify-between">
+            <Button
+              variant="outline"
+              onClick={handlePrevious}
+            >
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Geri
+            </Button>
+            <Button 
+              onClick={handleNext}
+              className="bg-primary text-white hover:bg-primary/90"
+            >
+              İleri
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
+          </CardFooter>
+        </Card>
+      </div>
+    );
+  }
+
+  // Results screen
+  if (currentStep === Step.RESULTS) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center px-4 py-12 bg-gradient-to-b from-white to-gray-50">
         <Card className="w-full max-w-2xl animate-fade-in shadow-lg border-0 overflow-hidden">
@@ -261,12 +447,18 @@ const Index = () => {
           <CardContent className="p-8">
             <div className="space-y-6">
               <div className="text-center mb-6">
-                <div className="inline-flex items-center justify-center p-2 bg-green-50 text-green-500 rounded-full mb-4">
+                <div className="inline-flex items-center justify-center p-3 bg-green-50 text-green-500 rounded-full mb-4">
                   <CheckCircle className="w-12 h-12" />
                 </div>
-                <h3 className="text-lg font-medium text-gray-600 mb-2">YZ Hazırlık Skoru</h3>
-                <div className="text-6xl font-bold text-primary">{score.percentage}%</div>
-                <p className="mt-2 text-gray-500">
+                <h3 className="text-lg font-medium text-gray-700 mb-2">YZ Hazırlık Skoru</h3>
+                <div className="text-6xl font-bold text-primary mb-2">{score.percentage}%</div>
+                <div className="w-full bg-gray-200 rounded-full h-4 mb-4">
+                  <div 
+                    className="bg-primary h-4 rounded-full transition-all duration-1000" 
+                    style={{ width: `${score.percentage}%` }}
+                  ></div>
+                </div>
+                <p className="mt-2 text-gray-600">
                   Toplam Puan: {score.total} / {questions.length * 6} (Ortalama: {score.average})
                 </p>
               </div>
@@ -274,26 +466,37 @@ const Index = () => {
               <Separator className="my-8" />
               
               <div className="space-y-6">
-                <h3 className="text-lg font-medium text-center">Yanıtlarınızın Detayları</h3>
+                <h3 className="text-lg font-medium text-center mb-4">Yanıtlarınızın Detayları</h3>
                 
-                {questions.map((question) => (
-                  <div key={question.id} className="p-4 rounded-md bg-gray-50">
-                    <p className="font-medium">{question.id}. {question.text}</p>
-                    <div className="mt-2 flex items-center">
-                      <span className="font-semibold text-primary text-lg">
-                        {question.answer}
-                      </span>
-                      <span className="ml-2 text-gray-500">
-                        ({ratingLabels.find(r => r.value === question.answer)?.label})
-                      </span>
-                    </div>
-                    {question.comment && (
-                      <div className="mt-2 text-gray-600 italic">
-                        "{question.comment}"
+                <div className="grid gap-4">
+                  {questions.map((question) => (
+                    <div key={question.id} className="p-5 rounded-lg bg-gray-50 border border-gray-100">
+                      <div className="flex items-start mb-3">
+                        <span className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary font-medium mr-3 flex-shrink-0">
+                          {question.id}
+                        </span>
+                        <h4 className="text-gray-800 font-medium">
+                          {question.text}
+                        </h4>
                       </div>
-                    )}
-                  </div>
-                ))}
+                      <div className="pl-11">
+                        <div className="flex items-center">
+                          <span className="font-semibold text-primary text-lg mr-2">
+                            {question.answer}
+                          </span>
+                          <span className="text-gray-600">
+                            ({ratingLabels.find(r => r.value === question.answer)?.label})
+                          </span>
+                        </div>
+                        {question.comment && (
+                          <div className="mt-2 text-gray-600 italic bg-white p-3 rounded border border-gray-100">
+                            "{question.comment}"
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
               
               <div className="mt-8 text-center">
@@ -308,12 +511,14 @@ const Index = () => {
                   onClick={() => {
                     setQuestions(initialQuestions);
                     setCurrentQuestionIndex(0);
+                    setCurrentStep(Step.INTRO);
                     setSubmitted(false);
                     setCompanyName("");
                     setRespondentName("");
                     setRespondentPosition("");
                     setSurveyId(null);
                   }}
+                  className="bg-primary text-white hover:bg-primary/90"
                 >
                   Yeni Anket Başlat
                 </Button>
@@ -325,85 +530,35 @@ const Index = () => {
     );
   }
 
+  // Questions screen
   return (
     <div className="min-h-screen flex flex-col items-center px-4 py-12 bg-gradient-to-b from-white to-gray-50">
-      <div className="w-full max-w-3xl animate-fade-in">
-        <header className="text-center mb-8">
-          <h1 className="text-3xl font-light tracking-tight text-primary mb-2">
-            YZ Hazırlık & Strateji Anketi
-          </h1>
-          <p className="text-gray-500 max-w-2xl mx-auto">
-            Orta Ölçekli Şirketler İçin
-          </p>
-        </header>
-
-        <Card className="mb-8 shadow-sm border-0">
-          <CardContent className="p-6">
-            <div className="space-y-4">
-              <div>
-                <label htmlFor="companyName" className="block text-sm font-medium text-gray-700 mb-1">
-                  Şirket Adı
-                </label>
-                <input
-                  id="companyName"
-                  type="text"
-                  value={companyName}
-                  onChange={(e) => setCompanyName(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
-                  placeholder="Şirketinizin adını girin"
-                />
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label htmlFor="respondentName" className="block text-sm font-medium text-gray-700 mb-1">
-                    Yanıtlayan Kişi
-                  </label>
-                  <input
-                    id="respondentName"
-                    type="text"
-                    value={respondentName}
-                    onChange={(e) => setRespondentName(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
-                    placeholder="Adınız ve soyadınız"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="respondentPosition" className="block text-sm font-medium text-gray-700 mb-1">
-                    Pozisyon
-                  </label>
-                  <input
-                    id="respondentPosition"
-                    type="text"
-                    value={respondentPosition}
-                    onChange={(e) => setRespondentPosition(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
-                    placeholder="Şirketteki pozisyonunuz"
-                  />
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <div className="bg-white p-6 rounded-lg shadow-sm mb-6">
-          <h2 className="text-lg font-medium mb-4">Yanıtlama Talimatları</h2>
-          <p className="text-gray-600 mb-4">
-            Aşağıdaki ifadeleri okuyun ve şirketiniz için ne ölçüde geçerli olduğunu 1'den 6'ya kadar puanlayın.
-          </p>
-          <div className="grid grid-cols-3 gap-2 mb-4">
-            {ratingLabels.map((item) => (
-              <div key={item.value} className="flex items-center text-sm">
-                <span className="font-semibold mr-2">{item.value} =</span>
-                <span className="text-gray-600">{item.label}</span>
-              </div>
-            ))}
+      <div className="w-full max-w-3xl animate-fade-in mb-8">
+        <div className="flex justify-between items-center mb-6">
+          <Button 
+            variant="outline" 
+            onClick={handlePrevious}
+            className="flex items-center"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            {currentQuestionIndex === 0 ? 'Şirket Bilgileri' : 'Önceki Soru'}
+          </Button>
+          <div className="text-center">
+            <h1 className="text-2xl font-light tracking-tight text-primary">
+              YZ Hazırlık & Strateji Anketi
+            </h1>
+            <p className="text-gray-500">
+              Soru {currentQuestionIndex + 1} / {questions.length}
+            </p>
           </div>
-          <p className="text-gray-600 text-sm italic">
-            (Gerekirse örnek veya yorum ekleyebilirsiniz.)
-          </p>
+          <div className="invisible">
+            <Button variant="outline">
+              Placeholder
+            </Button>
+          </div>
         </div>
 
-        <div className="mb-8">
+        <div className="mb-6">
           <div className="flex justify-between text-sm text-gray-500 mb-2">
             <span>İlerleme</span>
             <span>{Math.round(progress)}%</span>
@@ -411,108 +566,101 @@ const Index = () => {
           <Progress value={progress} className="h-2" />
         </div>
 
-        <div className="space-y-8">
-          {questions.map((question, index) => (
-            <div
-              key={question.id}
-              ref={el => questionRefs.current[index] = el}
-              className={`question-card p-6 bg-white rounded-lg shadow-sm transition-all duration-300 ${
-                currentQuestionIndex === index 
-                  ? "ring-2 ring-primary/20 shadow-md pulse-animation" 
-                  : ""
-              }`}
-            >
-              <div className="mb-4 flex items-start">
-                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary font-medium mr-3 flex-shrink-0">
-                  {question.id}
-                </span>
-                <h3 className="text-lg font-medium text-gray-800">
-                  {question.text}
-                </h3>
+        <Card className="mb-8 shadow-lg border-0 overflow-hidden">
+          <CardHeader className="bg-primary/5 py-5">
+            <div className="flex items-start">
+              <span className="flex items-center justify-center w-10 h-10 rounded-full bg-primary/10 text-primary font-medium mr-4 flex-shrink-0">
+                {questions[currentQuestionIndex].id}
+              </span>
+              <CardTitle className="text-xl font-medium text-gray-800">
+                {questions[currentQuestionIndex].text}
+              </CardTitle>
+            </div>
+          </CardHeader>
+          <CardContent className="p-6">
+            <div className="space-y-6">
+              <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
+                {ratingLabels.map((rating) => (
+                  <button
+                    key={rating.value}
+                    type="button"
+                    onClick={() => handleRatingSelect(questions[currentQuestionIndex].id, rating.value)}
+                    className={`rating-option flex flex-col items-center justify-center p-3 border rounded-md transition-all ${
+                      questions[currentQuestionIndex].answer === rating.value
+                        ? "rating-option-selected bg-primary/5 border-primary"
+                        : "hover:bg-gray-50 border-gray-200"
+                    }`}
+                  >
+                    <span className={`text-2xl font-semibold ${
+                      questions[currentQuestionIndex].answer === rating.value ? "text-primary" : "text-gray-700"
+                    }`}>
+                      {rating.value}
+                    </span>
+                    <span className="text-xs text-gray-500 mt-1 text-center">
+                      {rating.label}
+                    </span>
+                  </button>
+                ))}
               </div>
 
-              <div className="pl-11">
-                <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 mb-4">
-                  {ratingLabels.map((rating) => (
-                    <button
-                      key={rating.value}
-                      type="button"
-                      onClick={() => handleRatingSelect(question.id, rating.value)}
-                      className={`rating-option flex flex-col items-center justify-center p-3 border rounded-md transition-all ${
-                        question.answer === rating.value
-                          ? "rating-option-selected bg-primary/5 border-primary"
-                          : "hover:bg-gray-50 border-gray-200"
-                      }`}
-                    >
-                      <span className={`text-2xl font-semibold ${
-                        question.answer === rating.value ? "text-primary" : "text-gray-700"
-                      }`}>
-                        {rating.value}
-                      </span>
-                      <span className="text-xs text-gray-500 mt-1 text-center">
-                        {rating.label}
-                      </span>
-                    </button>
-                  ))}
-                </div>
-
-                <div className="mt-4">
-                  <label
-                    htmlFor={`comment-${question.id}`}
-                    className="block text-sm font-medium text-gray-700 mb-2"
-                  >
-                    Yorum (isteğe bağlı)
-                  </label>
-                  <Textarea
-                    id={`comment-${question.id}`}
-                    placeholder="Örnek veya ek açıklama ekleyin..."
-                    value={question.comment}
-                    onChange={(e) => handleCommentChange(question.id, e.target.value)}
-                    className="w-full"
-                  />
-                </div>
+              <div className="mt-6">
+                <label
+                  htmlFor={`comment-${questions[currentQuestionIndex].id}`}
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  Yorum (isteğe bağlı)
+                </label>
+                <Textarea
+                  id={`comment-${questions[currentQuestionIndex].id}`}
+                  placeholder="Örnek veya ek açıklama ekleyin..."
+                  value={questions[currentQuestionIndex].comment}
+                  onChange={(e) => handleCommentChange(questions[currentQuestionIndex].id, e.target.value)}
+                  className="w-full"
+                />
               </div>
             </div>
-          ))}
-        </div>
+          </CardContent>
+          <CardFooter className="px-6 py-4 bg-gray-50 flex justify-between items-center">
+            <div className="text-sm text-gray-500">
+              {currentQuestionIndex + 1} / {questions.length}
+            </div>
+            <Button 
+              onClick={handleNext}
+              className="bg-primary text-white hover:bg-primary/90"
+              disabled={questions[currentQuestionIndex].answer === null}
+            >
+              {currentQuestionIndex < questions.length - 1 ? (
+                <span className="flex items-center">
+                  Sonraki Soru
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </span>
+              ) : (
+                <span className="flex items-center">
+                  {submitting ? (
+                    <>
+                      <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Gönderiliyor...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="mr-2 h-4 w-4" />
+                      Anketi Gönder
+                    </>
+                  )}
+                </span>
+              )}
+            </Button>
+          </CardFooter>
+        </Card>
 
-        <div className="mt-8 flex justify-between">
-          <Button
-            variant="outline"
-            onClick={handlePrevious}
-            disabled={currentQuestionIndex === 0}
-          >
-            Önceki
-          </Button>
-          
-          <div>
-            {currentQuestionIndex < questions.length - 1 ? (
-              <Button onClick={handleNext}>
-                Sonraki
-              </Button>
-            ) : (
-              <Button 
-                onClick={handleSubmit}
-                className="bg-primary text-white hover:bg-primary/90"
-                disabled={submitting}
-              >
-                {submitting ? (
-                  <span className="flex items-center">
-                    <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    Gönderiliyor...
-                  </span>
-                ) : (
-                  <span className="flex items-center">
-                    <Send className="mr-2 h-4 w-4" />
-                    Anketi Gönder
-                  </span>
-                )}
-              </Button>
-            )}
-          </div>
+        {/* Hidden references for scrolling */}
+        <div className="hidden">
+          {questions.map((question, index) => (
+            <div key={question.id} ref={el => questionRefs.current[index] = el}></div>
+          ))}
         </div>
       </div>
     </div>
