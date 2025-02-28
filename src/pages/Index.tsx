@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/use-toast";
 import { Progress } from "@/components/ui/progress";
 import { supabase } from "@/integrations/supabase/client";
-import { ArrowLeft, ArrowRight, Send, CheckCircle, User, Building, Briefcase, HelpCircle } from "lucide-react";
+import { ArrowLeft, ArrowRight, Send, CheckCircle, User, Building, Briefcase, HelpCircle, Mail } from "lucide-react";
 
 interface SurveyQuestion {
   id: number;
@@ -21,6 +21,7 @@ interface SurveyResponse {
   company_name: string;
   respondent_name: string;
   respondent_position: string;
+  respondent_email: string;
   answers: SurveyQuestion[];
   created_at?: string;
 }
@@ -112,6 +113,8 @@ const Index = () => {
   const [companyName, setCompanyName] = useState("");
   const [respondentName, setRespondentName] = useState("");
   const [respondentPosition, setRespondentPosition] = useState("");
+  const [respondentEmail, setRespondentEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
   const [progress, setProgress] = useState(0);
   const [submitting, setSubmitting] = useState(false);
   const [surveyId, setSurveyId] = useState<string | null>(null);
@@ -143,10 +146,38 @@ const Index = () => {
     );
   };
 
+  const validateEmail = (email: string): boolean => {
+    // Check if email is provided
+    if (!email.trim()) {
+      setEmailError("E-posta adresi zorunludur.");
+      return false;
+    }
+
+    // Basic email format validation using regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setEmailError("Geçerli bir e-posta adresi giriniz.");
+      return false;
+    }
+
+    // Check for common personal email domains
+    const personalDomains = ['gmail.com', 'hotmail.com', 'yahoo.com', 'outlook.com', 'icloud.com', 'aol.com', 'yandex.com', 'mail.com', 'protonmail.com', 'zoho.com'];
+    const domain = email.split('@')[1].toLowerCase();
+    
+    if (personalDomains.includes(domain)) {
+      setEmailError("Lütfen kurumsal e-posta adresi giriniz (gmail, hotmail, vb. kabul edilmemektedir).");
+      return false;
+    }
+
+    setEmailError("");
+    return true;
+  };
+
   const handleNext = () => {
     if (currentStep === Step.INTRO) {
       setCurrentStep(Step.COMPANY_INFO);
     } else if (currentStep === Step.COMPANY_INFO) {
+      // Validate company name
       if (!companyName.trim()) {
         toast({
           title: "Uyarı",
@@ -155,6 +186,17 @@ const Index = () => {
         });
         return;
       }
+
+      // Validate email
+      if (!validateEmail(respondentEmail)) {
+        toast({
+          title: "Uyarı",
+          description: emailError,
+          variant: "destructive",
+        });
+        return;
+      }
+
       setCurrentStep(Step.QUESTIONS);
     } else if (currentStep === Step.QUESTIONS) {
       if (currentQuestionIndex < questions.length - 1) {
@@ -197,6 +239,7 @@ const Index = () => {
             company_name: companyName,
             respondent_name: respondentName,
             respondent_position: respondentPosition,
+            respondent_email: respondentEmail,
             answers: questions
           }
         ])
@@ -374,6 +417,37 @@ const Index = () => {
                   </div>
                 </div>
                 
+                <div>
+                  <label htmlFor="respondentEmail" className="block text-sm font-medium text-gray-700 mb-1">
+                    E-posta Adresi <span className="text-red-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <Mail className="h-5 w-5 text-gray-400" />
+                    </div>
+                    <input
+                      id="respondentEmail"
+                      type="email"
+                      value={respondentEmail}
+                      onChange={(e) => {
+                        setRespondentEmail(e.target.value);
+                        if (emailError) validateEmail(e.target.value);
+                      }}
+                      className={`w-full pl-10 px-3 py-2.5 border ${
+                        emailError ? "border-red-500" : "border-gray-300"
+                      } rounded-md focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors`}
+                      placeholder="Kurumsal e-posta adresinizi girin"
+                      required
+                    />
+                  </div>
+                  {emailError && (
+                    <p className="mt-1 text-sm text-red-500">{emailError}</p>
+                  )}
+                  <p className="mt-1 text-xs text-gray-500">
+                    Lütfen gmail, hotmail vb. kişisel e-posta adresleri kullanmayın.
+                  </p>
+                </div>
+                
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label htmlFor="respondentName" className="block text-sm font-medium text-gray-700 mb-1">
@@ -516,6 +590,8 @@ const Index = () => {
                     setCompanyName("");
                     setRespondentName("");
                     setRespondentPosition("");
+                    setRespondentEmail("");
+                    setEmailError("");
                     setSurveyId(null);
                   }}
                   className="bg-primary text-white hover:bg-primary/90"
