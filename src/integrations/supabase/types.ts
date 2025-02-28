@@ -13,6 +13,7 @@ export type Database = {
         Row: {
           answers: Json
           company_name: string | null
+          country: string | null
           created_at: string | null
           id: string
           industry: string | null
@@ -24,6 +25,7 @@ export type Database = {
         Insert: {
           answers: Json
           company_name?: string | null
+          country?: string | null
           created_at?: string | null
           id?: string
           industry?: string | null
@@ -35,6 +37,7 @@ export type Database = {
         Update: {
           answers?: Json
           company_name?: string | null
+          country?: string | null
           created_at?: string | null
           id?: string
           industry?: string | null
