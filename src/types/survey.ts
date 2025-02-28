@@ -12,6 +12,8 @@ export interface SurveyResponse {
   respondent_name: string;
   respondent_position: string;
   respondent_email: string;
+  sector: string;
+  industry: string;
   answers: SurveyQuestion[];
   created_at?: string;
 }

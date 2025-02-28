@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Card, CardHeader, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowRight, Building, User, Briefcase, Mail } from "lucide-react";
+import { ArrowLeft, ArrowRight, Building, User, Briefcase, Mail, BarChart2, Factory } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
 import { validateEmail } from "@/utils/surveyUtils";
 import EDTLogo from "./EDTLogo";
@@ -18,9 +18,38 @@ interface CompanyInfoStepProps {
   setRespondentEmail: (email: string) => void;
   emailError: string;
   setEmailError: (error: string) => void;
+  sector: string;
+  setSector: (sector: string) => void;
+  industry: string;
+  setIndustry: (industry: string) => void;
   onNext: () => void;
   onPrevious: () => void;
 }
+
+// Define sector and industry options
+const sectors = [
+  "Özel Sektör",
+  "Kamu",
+  "STK/Vakıf",
+  "Diğer"
+];
+
+const industries = [
+  "Bilişim Teknolojileri",
+  "Üretim",
+  "Finans",
+  "Sağlık",
+  "Eğitim",
+  "Perakende",
+  "Enerji",
+  "İnşaat",
+  "Lojistik",
+  "Turizm",
+  "Tarım",
+  "Telekom",
+  "Medya",
+  "Diğer"
+];
 
 const CompanyInfoStep: React.FC<CompanyInfoStepProps> = ({
   companyName,
@@ -33,6 +62,10 @@ const CompanyInfoStep: React.FC<CompanyInfoStepProps> = ({
   setRespondentEmail,
   emailError,
   setEmailError,
+  sector,
+  setSector,
+  industry,
+  setIndustry,
   onNext,
   onPrevious
 }) => {
@@ -43,6 +76,26 @@ const CompanyInfoStep: React.FC<CompanyInfoStepProps> = ({
       toast({
         title: "Uyarı",
         description: "Lütfen şirket adını giriniz.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Validate sector
+    if (!sector) {
+      toast({
+        title: "Uyarı",
+        description: "Lütfen sektör seçiniz.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Validate industry
+    if (!industry) {
+      toast({
+        title: "Uyarı",
+        description: "Lütfen endüstri seçiniz.",
         variant: "destructive",
       });
       return;
@@ -96,6 +149,63 @@ const CompanyInfoStep: React.FC<CompanyInfoStepProps> = ({
                     placeholder="Şirketinizin adını girin"
                     required
                   />
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div>
+                  <label htmlFor="sector" className="block text-sm font-medium text-gray-700 mb-1">
+                    Sektör <span className="text-red-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <BarChart2 className="h-5 w-5 text-gray-400" />
+                    </div>
+                    <select
+                      id="sector"
+                      value={sector}
+                      onChange={(e) => setSector(e.target.value)}
+                      className="w-full pl-10 px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors appearance-none bg-white"
+                      required
+                    >
+                      <option value="">Sektör seçiniz</option>
+                      {sectors.map((option) => (
+                        <option key={option} value={option}>{option}</option>
+                      ))}
+                    </select>
+                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                      <svg className="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <label htmlFor="industry" className="block text-sm font-medium text-gray-700 mb-1">
+                    Endüstri <span className="text-red-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <Factory className="h-5 w-5 text-gray-400" />
+                    </div>
+                    <select
+                      id="industry"
+                      value={industry}
+                      onChange={(e) => setIndustry(e.target.value)}
+                      className="w-full pl-10 px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors appearance-none bg-white"
+                      required
+                    >
+                      <option value="">Endüstri seçiniz</option>
+                      {industries.map((option) => (
+                        <option key={option} value={option}>{option}</option>
+                      ))}
+                    </select>
+                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                      <svg className="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                      </svg>
+                    </div>
+                  </div>
                 </div>
               </div>
               
