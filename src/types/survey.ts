@@ -4,6 +4,9 @@ export interface SurveyQuestion {
   text: string;
   answer: number | null;
   comment: string;
+  checkboxOptions?: string[];
+  selectedOptions?: string[];
+  type?: 'rating' | 'checkbox';
 }
 
 export interface SurveyResponse {

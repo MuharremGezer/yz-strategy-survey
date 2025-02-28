@@ -10,6 +10,8 @@ import { SurveyQuestion } from "@/types/survey";
 import { ratingLabels } from "@/data/ratingLabels";
 import EDTLogo from "./EDTLogo";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 
 interface QuestionsStepProps {
   questions: SurveyQuestion[];
@@ -17,6 +19,7 @@ interface QuestionsStepProps {
   setCurrentQuestionIndex: (index: number) => void;
   handleRatingSelect: (questionId: number, rating: number) => void;
   handleCommentChange: (questionId: number, comment: string) => void;
+  handleCheckboxChange: (questionId: number, option: string, checked: boolean) => void;
   progress: number;
   submitting: boolean;
   onPrevious: () => void;
@@ -30,6 +33,7 @@ const QuestionsStep: React.FC<QuestionsStepProps> = ({
   setCurrentQuestionIndex,
   handleRatingSelect,
   handleCommentChange,
+  handleCheckboxChange,
   progress,
   submitting,
   onPrevious,
@@ -67,6 +71,17 @@ const QuestionsStep: React.FC<QuestionsStepProps> = ({
     } else {
       onPrevious();
     }
+  };
+
+  const currentQuestion = questions[currentQuestionIndex];
+  const isQuestionAnswered = () => {
+    if (!currentQuestion) return false;
+    
+    if (currentQuestion.type === 'checkbox') {
+      return currentQuestion.selectedOptions && currentQuestion.selectedOptions.length > 0;
+    }
+    
+    return currentQuestion.answer !== null;
   };
 
   return (
@@ -111,51 +126,73 @@ const QuestionsStep: React.FC<QuestionsStepProps> = ({
           <CardHeader className="bg-blue-50 py-6">
             <div className="flex items-start">
               <span className="flex items-center justify-center w-10 h-10 rounded-full bg-blue-100 text-blue-700 font-medium mr-4 flex-shrink-0">
-                {questions[currentQuestionIndex].id}
+                {currentQuestion.id}
               </span>
               <CardTitle className="text-xl font-medium text-gray-800">
-                {questions[currentQuestionIndex].text}
+                {currentQuestion.text}
               </CardTitle>
             </div>
           </CardHeader>
           <CardContent className="p-6 card-gradient">
             <div className="space-y-6">
-              <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
-                {ratingLabels.map((rating) => (
-                  <button
-                    key={rating.value}
-                    type="button"
-                    onClick={() => handleRatingSelect(questions[currentQuestionIndex].id, rating.value)}
-                    className={`rating-option flex flex-col items-center justify-center p-4 border rounded-lg transition-all ${
-                      questions[currentQuestionIndex].answer === rating.value
-                        ? "rating-option-selected bg-blue-50 border-blue-500"
-                        : "hover:bg-gray-50 border-gray-200"
-                    }`}
-                  >
-                    <span className={`text-2xl font-semibold ${
-                      questions[currentQuestionIndex].answer === rating.value ? "text-blue-700" : "text-gray-700"
-                    }`}>
-                      {rating.value}
-                    </span>
-                    <span className="text-xs text-gray-500 mt-1 text-center">
-                      {t(`rating.${rating.value}`)}
-                    </span>
-                  </button>
-                ))}
-              </div>
+              {currentQuestion.type === 'checkbox' ? (
+                <div className="space-y-4">
+                  {currentQuestion.checkboxOptions?.map((option) => (
+                    <div key={option} className="flex items-center space-x-3 border p-3 rounded-md bg-white hover:bg-gray-50 transition-colors">
+                      <Checkbox 
+                        id={`checkbox-${option}`} 
+                        checked={currentQuestion.selectedOptions?.includes(option)}
+                        onCheckedChange={(checked) => 
+                          handleCheckboxChange(currentQuestion.id, option, checked === true)
+                        }
+                      />
+                      <Label 
+                        htmlFor={`checkbox-${option}`}
+                        className="text-gray-700 cursor-pointer flex-grow"
+                      >
+                        {option}
+                      </Label>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
+                  {ratingLabels.map((rating) => (
+                    <button
+                      key={rating.value}
+                      type="button"
+                      onClick={() => handleRatingSelect(currentQuestion.id, rating.value)}
+                      className={`rating-option flex flex-col items-center justify-center p-4 border rounded-lg transition-all ${
+                        currentQuestion.answer === rating.value
+                          ? "rating-option-selected bg-blue-50 border-blue-500"
+                          : "hover:bg-gray-50 border-gray-200"
+                      }`}
+                    >
+                      <span className={`text-2xl font-semibold ${
+                        currentQuestion.answer === rating.value ? "text-blue-700" : "text-gray-700"
+                      }`}>
+                        {rating.value}
+                      </span>
+                      <span className="text-xs text-gray-500 mt-1 text-center">
+                        {t(`rating.${rating.value}`)}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              )}
 
               <div className="mt-8">
                 <label
-                  htmlFor={`comment-${questions[currentQuestionIndex].id}`}
+                  htmlFor={`comment-${currentQuestion.id}`}
                   className="block text-sm font-medium text-gray-700 mb-2"
                 >
                   {t("questions.addComment")}
                 </label>
                 <Textarea
-                  id={`comment-${questions[currentQuestionIndex].id}`}
+                  id={`comment-${currentQuestion.id}`}
                   placeholder={t("questions.addComment")}
-                  value={questions[currentQuestionIndex].comment}
-                  onChange={(e) => handleCommentChange(questions[currentQuestionIndex].id, e.target.value)}
+                  value={currentQuestion.comment}
+                  onChange={(e) => handleCommentChange(currentQuestion.id, e.target.value)}
                   className="w-full min-h-[100px]"
                 />
               </div>
@@ -168,7 +205,7 @@ const QuestionsStep: React.FC<QuestionsStepProps> = ({
             <Button 
               onClick={handleNextQuestion}
               className="bg-blue-700 hover:bg-blue-800 text-white"
-              disabled={questions[currentQuestionIndex].answer === null}
+              disabled={!isQuestionAnswered()}
               size="lg"
             >
               {currentQuestionIndex < questions.length - 1 ? (

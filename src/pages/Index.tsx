@@ -44,7 +44,11 @@ const Index = () => {
     questionRefs.current = questionRefs.current.slice(0, questions.length);
     
     // Calculate progress percentage
-    const answeredCount = questions.filter(q => q.answer !== null).length;
+    const answeredCount = questions.filter(q => 
+      q.type === 'checkbox' 
+        ? (q.selectedOptions && q.selectedOptions.length > 0) 
+        : q.answer !== null
+    ).length;
     setProgress((answeredCount / questions.length) * 100);
   }, [questions]);
 
@@ -61,6 +65,22 @@ const Index = () => {
       questions.map((q) =>
         q.id === questionId ? { ...q, comment } : q
       )
+    );
+  };
+
+  const handleCheckboxChange = (questionId: number, option: string, checked: boolean) => {
+    setQuestions(
+      questions.map((q) => {
+        if (q.id === questionId) {
+          const currentSelected = q.selectedOptions || [];
+          const updatedSelected = checked 
+            ? [...currentSelected, option]
+            : currentSelected.filter(item => item !== option);
+          
+          return { ...q, selectedOptions: updatedSelected };
+        }
+        return q;
+      })
     );
   };
 
@@ -163,7 +183,11 @@ const Index = () => {
   };
 
   const handleSubmit = async () => {
-    const unansweredQuestions = questions.filter(q => q.answer === null);
+    const unansweredQuestions = questions.filter(q => 
+      q.type === 'checkbox' 
+        ? (!q.selectedOptions || q.selectedOptions.length === 0) 
+        : q.answer === null
+    );
     
     if (unansweredQuestions.length > 0) {
       toast({
@@ -173,7 +197,11 @@ const Index = () => {
       });
       
       // Scroll to first unanswered question
-      const firstUnansweredIndex = questions.findIndex(q => q.answer === null);
+      const firstUnansweredIndex = questions.findIndex(q => 
+        q.type === 'checkbox' 
+          ? (!q.selectedOptions || q.selectedOptions.length === 0) 
+          : q.answer === null
+      );
       if (firstUnansweredIndex !== -1) {
         setCurrentQuestionIndex(firstUnansweredIndex);
         questionRefs.current[firstUnansweredIndex]?.scrollIntoView({ 
@@ -266,6 +294,7 @@ const Index = () => {
       setCurrentQuestionIndex={setCurrentQuestionIndex}
       handleRatingSelect={handleRatingSelect}
       handleCommentChange={handleCommentChange}
+      handleCheckboxChange={handleCheckboxChange}
       progress={progress}
       submitting={submitting}
       onPrevious={handlePrevious}
