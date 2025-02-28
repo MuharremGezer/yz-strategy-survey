@@ -177,7 +177,7 @@ export const translations = {
     "companyInfo.emailPlaceholder": "E-posta adresinizi girin",
     "companyInfo.country": "Ülke",
     "companyInfo.countryPlaceholder": "Ülke seçin",
-    "companyInfo.privacyConsent": "Verilerimin üçüncü taraflarla paylaşılmayacağını ve yalnızca bu anket amacıyla kullanılacağını anlıyorum.",
+    "companyInfo.privacyConsent": "Verilerimin üçüncü taraflarla paylaşılmayacağını ve yalnızca bu anket amacıyla kullanılacağını onaylıyorum.",
     "companyInfo.privacyRequired": "Devam etmek için gizlilik beyanını kabul etmelisiniz.",
     
     // Sector options
