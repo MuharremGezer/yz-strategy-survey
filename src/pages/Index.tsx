@@ -90,6 +90,9 @@ const Index = () => {
     try {
       setSubmitting(true);
       
+      // Convert questions to a plain JSON object to make it compatible with Supabase's Json type
+      const answersAsJson = JSON.parse(JSON.stringify(questions));
+      
       const { data, error } = await supabase
         .from('survey_responses')
         .insert([
@@ -97,8 +100,8 @@ const Index = () => {
             company_name: companyName,
             respondent_name: respondentName,
             respondent_position: respondentPosition,
-            respondent_email: respondentEmail, // Make sure this field is included
-            answers: questions
+            respondent_email: respondentEmail,
+            answers: answersAsJson
           }
         ])
         .select();
