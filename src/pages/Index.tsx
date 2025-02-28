@@ -105,17 +105,28 @@ const Index = () => {
       // Convert questions to a plain JSON object to make it compatible with Supabase's Json type
       const answersAsJson = JSON.parse(JSON.stringify(questions));
       
+      console.log("Saving survey with data:", {
+        company_name: companyName,
+        respondent_name: respondentName,
+        respondent_position: respondentPosition,
+        respondent_email: respondentEmail,
+        sector: sector,
+        industry: industry,
+        country: country,
+        language: language
+      });
+
       const { data, error } = await supabase
         .from('survey_responses')
         .insert([
           { 
-            company_name: companyName,
-            respondent_name: respondentName,
-            respondent_position: respondentPosition,
-            respondent_email: respondentEmail,
-            sector: sector,
-            industry: industry,
-            country: country,
+            company_name: companyName || null,
+            respondent_name: respondentName || null,
+            respondent_position: respondentPosition || null,
+            respondent_email: respondentEmail || null,
+            sector: sector || null,
+            industry: industry || null,
+            country: country || null,
             answers: answersAsJson,
             language: language
           }
@@ -126,7 +137,7 @@ const Index = () => {
         console.error("Error saving survey:", error);
         toast({
           title: t("error.saving_survey"),
-          description: t("error.saving_survey"),
+          description: error.message || t("error.saving_survey"),
           variant: "destructive",
         });
         setSubmitting(false);
