@@ -77,6 +77,7 @@ export const translations = {
     "nav.back": "Back",
     "nav.next": "Next",
     "nav.submit": "Submit",
+    "nav.submitting": "Submitting...",
     
     // Questions Step
     "questions.progress": "Progress",
@@ -95,6 +96,7 @@ export const translations = {
     "results.category.leading": "Leading",
     "results.start_new": "Start a New Survey",
     "results.section_scores": "Section Scores",
+    "results.print": "Print Results",
     
     // Error messages
     "error.required_fields": "Please fill out all required fields",
@@ -175,6 +177,7 @@ export const translations = {
     "nav.back": "Geri",
     "nav.next": "İleri",
     "nav.submit": "Gönder",
+    "nav.submitting": "Gönderiliyor...",
     
     // Questions Step
     "questions.progress": "İlerleme",
@@ -193,6 +196,7 @@ export const translations = {
     "results.category.leading": "Lider",
     "results.start_new": "Yeni Anket Başlat",
     "results.section_scores": "Bölüm Puanları",
+    "results.print": "Sonuçları Yazdır",
     
     // Error messages
     "error.required_fields": "Lütfen tüm zorunlu alanları doldurun",

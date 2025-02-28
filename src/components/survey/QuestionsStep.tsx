@@ -9,6 +9,7 @@ import { toast } from "@/components/ui/use-toast";
 import { SurveyQuestion } from "@/types/survey";
 import { ratingLabels } from "@/data/ratingLabels";
 import EDTLogo from "./EDTLogo";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface QuestionsStepProps {
   questions: SurveyQuestion[];
@@ -35,6 +36,7 @@ const QuestionsStep: React.FC<QuestionsStepProps> = ({
   onSubmit,
   onNext,
 }) => {
+  const { t } = useLanguage();
   const questionRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
@@ -78,7 +80,7 @@ const QuestionsStep: React.FC<QuestionsStepProps> = ({
             size="lg"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
-            {currentQuestionIndex === 0 ? 'Şirket Bilgileri' : 'Önceki Soru'}
+            {currentQuestionIndex === 0 ? t("companyInfo.title") : t("nav.back")}
           </Button>
           <EDTLogo />
           <div className="invisible">
@@ -90,16 +92,16 @@ const QuestionsStep: React.FC<QuestionsStepProps> = ({
 
         <div className="text-center mb-6">
           <h1 className="text-2xl font-light tracking-tight text-gray-800">
-            Yapay Zeka Hazırlık & Strateji Anketi
+            {t("survey.title")}
           </h1>
           <p className="text-gray-600 mt-2">
-            Soru {currentQuestionIndex + 1} / {questions.length}
+            {t("questions.question")} {currentQuestionIndex + 1} / {questions.length}
           </p>
         </div>
 
         <div className="mb-6">
           <div className="flex justify-between text-sm text-gray-600 mb-2">
-            <span>İlerleme</span>
+            <span>{t("questions.progress")}</span>
             <span>{Math.round(progress)}%</span>
           </div>
           <Progress value={progress} className="h-3" />
@@ -136,7 +138,7 @@ const QuestionsStep: React.FC<QuestionsStepProps> = ({
                       {rating.value}
                     </span>
                     <span className="text-xs text-gray-500 mt-1 text-center">
-                      {rating.label}
+                      {t(`rating.${rating.value}`)}
                     </span>
                   </button>
                 ))}
@@ -147,11 +149,11 @@ const QuestionsStep: React.FC<QuestionsStepProps> = ({
                   htmlFor={`comment-${questions[currentQuestionIndex].id}`}
                   className="block text-sm font-medium text-gray-700 mb-2"
                 >
-                  Yorum (isteğe bağlı)
+                  {t("questions.addComment")}
                 </label>
                 <Textarea
                   id={`comment-${questions[currentQuestionIndex].id}`}
-                  placeholder="Örnek veya ek açıklama ekleyin..."
+                  placeholder={t("questions.addComment")}
                   value={questions[currentQuestionIndex].comment}
                   onChange={(e) => handleCommentChange(questions[currentQuestionIndex].id, e.target.value)}
                   className="w-full min-h-[100px]"
@@ -171,7 +173,7 @@ const QuestionsStep: React.FC<QuestionsStepProps> = ({
             >
               {currentQuestionIndex < questions.length - 1 ? (
                 <span className="flex items-center">
-                  Sonraki Soru
+                  {t("nav.next")}
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </span>
               ) : (
@@ -182,12 +184,12 @@ const QuestionsStep: React.FC<QuestionsStepProps> = ({
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                       </svg>
-                      Gönderiliyor...
+                      {t("nav.submitting")}
                     </>
                   ) : (
                     <>
                       <Send className="mr-2 h-4 w-4" />
-                      Anketi Gönder
+                      {t("nav.submit")}
                     </>
                   )}
                 </span>

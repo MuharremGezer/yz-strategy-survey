@@ -7,6 +7,7 @@ import { SurveyQuestion, ScoreResult } from "@/types/survey";
 import { ratingLabels } from "@/data/ratingLabels";
 import { CheckCircle } from "lucide-react";
 import EDTLogo from "./EDTLogo";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface ResultsStepProps {
   questions: SurveyQuestion[];
@@ -15,12 +16,14 @@ interface ResultsStepProps {
 }
 
 const ResultsStep: React.FC<ResultsStepProps> = ({ questions, score, onStartNewSurvey }) => {
+  const { t } = useLanguage();
+  
   return (
     <div className="page-background flex flex-col items-center justify-center px-4 py-12">
       <Card className="w-full max-w-3xl animate-fade-in shadow-xl border-0 overflow-hidden">
         <CardHeader className="survey-header text-white text-center py-8">
           <EDTLogo />
-          <CardTitle className="text-2xl font-light tracking-tight">Anket Sonuçlarınız</CardTitle>
+          <CardTitle className="text-2xl font-light tracking-tight">{t("results.title")}</CardTitle>
         </CardHeader>
         <CardContent className="p-8 card-gradient">
           <div className="space-y-8">
@@ -28,7 +31,7 @@ const ResultsStep: React.FC<ResultsStepProps> = ({ questions, score, onStartNewS
               <div className="inline-flex items-center justify-center p-4 bg-green-50 text-green-600 rounded-full mb-6">
                 <CheckCircle className="w-12 h-12" />
               </div>
-              <h3 className="text-2xl font-medium text-gray-800 mb-4">Yapay Zeka Hazırlık Skoru</h3>
+              <h3 className="text-2xl font-medium text-gray-800 mb-4">{t("results.your_score")}</h3>
               <div className="text-7xl font-bold text-blue-700 mb-4">{score.percentage}%</div>
               <div className="w-full bg-gray-200 rounded-full h-6 mb-6 overflow-hidden">
                 <div 
@@ -38,10 +41,10 @@ const ResultsStep: React.FC<ResultsStepProps> = ({ questions, score, onStartNewS
               </div>
               <div className="inline-block bg-blue-50 px-5 py-3 rounded-lg">
                 <p className="text-gray-700">
-                  <span className="font-semibold">Toplam Puan:</span> {score.total} / {questions.length * 6}
+                  <span className="font-semibold">{t("results.your_score")}:</span> {score.total} / {questions.length * 6}
                 </p>
                 <p className="text-gray-700">
-                  <span className="font-semibold">Ortalama:</span> {score.average}
+                  <span className="font-semibold">{t("results.category.beginner")}:</span> {score.average}
                 </p>
               </div>
             </div>
@@ -49,7 +52,7 @@ const ResultsStep: React.FC<ResultsStepProps> = ({ questions, score, onStartNewS
             <Separator className="my-8" />
             
             <div className="space-y-6">
-              <h3 className="text-xl font-medium text-center mb-6">Yanıtlarınızın Detayları</h3>
+              <h3 className="text-xl font-medium text-center mb-6">{t("results.section_scores")}</h3>
               
               <div className="grid gap-5">
                 {questions.map((question) => (
@@ -89,14 +92,14 @@ const ResultsStep: React.FC<ResultsStepProps> = ({ questions, score, onStartNewS
                 className="mr-4 border-gray-300"
                 size="lg"
               >
-                Sonuçları Yazdır
+                {t("results.print")}
               </Button>
               <Button 
                 onClick={onStartNewSurvey}
                 className="bg-blue-700 hover:bg-blue-800 text-white"
                 size="lg"
               >
-                Yeni Anket Başlat
+                {t("results.start_new")}
               </Button>
             </div>
           </div>

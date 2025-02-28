@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from "react";
 import { toast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { Step, SurveyQuestion } from "@/types/survey";
-import { initialQuestions } from "@/data/initialQuestions";
+import { initialQuestionsEN, initialQuestionsTR } from "@/data/initialQuestions";
 import { calculateScore } from "@/utils/surveyUtils";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -14,8 +14,10 @@ import QuestionsStep from "@/components/survey/QuestionsStep";
 import ResultsStep from "@/components/survey/ResultsStep";
 
 const Index = () => {
-  const { t } = useLanguage();
-  const [questions, setQuestions] = useState<SurveyQuestion[]>(initialQuestions);
+  const { language, t } = useLanguage();
+  const [questions, setQuestions] = useState<SurveyQuestion[]>(
+    language === 'en' ? initialQuestionsEN : initialQuestionsTR
+  );
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [submitted, setSubmitted] = useState(false);
   const [companyName, setCompanyName] = useState("");
@@ -30,6 +32,11 @@ const Index = () => {
   const [surveyId, setSurveyId] = useState<string | null>(null);
   const [currentStep, setCurrentStep] = useState<Step>(Step.INTRO);
   const questionRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  // Update questions when language changes
+  useEffect(() => {
+    setQuestions(language === 'en' ? initialQuestionsEN : initialQuestionsTR);
+  }, [language]);
 
   useEffect(() => {
     // Initialize refs array
@@ -107,7 +114,8 @@ const Index = () => {
             respondent_email: respondentEmail,
             sector: sector,
             industry: industry,
-            answers: answersAsJson
+            answers: answersAsJson,
+            language: language
           }
         ])
         .select();
@@ -179,7 +187,8 @@ const Index = () => {
   };
 
   const startNewSurvey = () => {
-    setQuestions(initialQuestions);
+    // Reset the survey with questions in the current language
+    setQuestions(language === 'en' ? initialQuestionsEN : initialQuestionsTR);
     setCurrentQuestionIndex(0);
     setCurrentStep(Step.INTRO);
     setSubmitted(false);
