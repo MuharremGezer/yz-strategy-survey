@@ -7,6 +7,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/use-toast";
 import { RadioGroup } from "@/components/ui/radio-group";
 import { Progress } from "@/components/ui/progress";
+import { supabase } from "@/integrations/supabase/client";
+import { Send, CheckCircle } from "lucide-react";
 
 interface SurveyQuestion {
   id: number;
@@ -95,6 +97,8 @@ const Index = () => {
   const [respondentName, setRespondentName] = useState("");
   const [respondentPosition, setRespondentPosition] = useState("");
   const [progress, setProgress] = useState(0);
+  const [submitting, setSubmitting] = useState(false);
+  const [surveyId, setSurveyId] = useState<string | null>(null);
   const questionRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
@@ -142,7 +146,52 @@ const Index = () => {
     }
   };
 
-  const handleSubmit = () => {
+  const saveSurveyToDatabase = async () => {
+    try {
+      setSubmitting(true);
+      
+      const { data, error } = await supabase
+        .from('survey_responses')
+        .insert([
+          { 
+            company_name: companyName,
+            respondent_name: respondentName,
+            respondent_position: respondentPosition,
+            answers: questions
+          }
+        ])
+        .select();
+      
+      if (error) {
+        console.error("Error saving survey:", error);
+        toast({
+          title: "Hata",
+          description: "Anket kaydedilirken bir hata oluştu. Lütfen tekrar deneyin.",
+          variant: "destructive",
+        });
+        setSubmitting(false);
+        return false;
+      }
+      
+      if (data && data.length > 0) {
+        setSurveyId(data[0].id);
+        return true;
+      }
+      
+      return false;
+    } catch (error) {
+      console.error("Exception saving survey:", error);
+      toast({
+        title: "Hata",
+        description: "Anket kaydedilirken bir hata oluştu. Lütfen tekrar deneyin.",
+        variant: "destructive",
+      });
+      setSubmitting(false);
+      return false;
+    }
+  };
+
+  const handleSubmit = async () => {
     const unansweredQuestions = questions.filter(q => q.answer === null);
     
     if (unansweredQuestions.length > 0) {
@@ -164,14 +213,18 @@ const Index = () => {
       return;
     }
     
-    // Process submission
-    console.log("Survey submitted:", { companyName, respondentName, respondentPosition, answers: questions });
+    // Save to database
+    const success = await saveSurveyToDatabase();
     
-    setSubmitted(true);
-    toast({
-      title: "Anket Başarıyla Gönderildi",
-      description: "Katılımınız için teşekkür ederiz!",
-    });
+    if (success) {
+      setSubmitted(true);
+      toast({
+        title: "Anket Başarıyla Gönderildi",
+        description: "Katılımınız için teşekkür ederiz!",
+      });
+    }
+    
+    setSubmitting(false);
   };
 
   const calculateScore = () => {
@@ -197,7 +250,10 @@ const Index = () => {
           </CardHeader>
           <CardContent className="p-8">
             <div className="space-y-6">
-              <div className="text-center">
+              <div className="text-center mb-6">
+                <div className="inline-flex items-center justify-center p-2 bg-green-50 text-green-500 rounded-full mb-4">
+                  <CheckCircle className="w-12 h-12" />
+                </div>
                 <h3 className="text-lg font-medium text-gray-600 mb-2">YZ Hazırlık Skoru</h3>
                 <div className="text-6xl font-bold text-primary">{score.percentage}%</div>
                 <p className="mt-2 text-gray-500">
@@ -246,6 +302,7 @@ const Index = () => {
                     setCompanyName("");
                     setRespondentName("");
                     setRespondentPosition("");
+                    setSurveyId(null);
                   }}
                 >
                   Yeni Anket Başlat
@@ -427,8 +484,22 @@ const Index = () => {
               <Button 
                 onClick={handleSubmit}
                 className="bg-primary text-white hover:bg-primary/90"
+                disabled={submitting}
               >
-                Anketi Gönder
+                {submitting ? (
+                  <span className="flex items-center">
+                    <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Gönderiliyor...
+                  </span>
+                ) : (
+                  <span className="flex items-center">
+                    <Send className="mr-2 h-4 w-4" />
+                    Anketi Gönder
+                  </span>
+                )}
               </Button>
             )}
           </div>
