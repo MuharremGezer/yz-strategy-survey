@@ -130,8 +130,8 @@ const QuestionsStep: React.FC<QuestionsStepProps> = ({
               </CardTitle>
             </div>
           </CardHeader>
-          <CardContent className="p-6 card-gradient">
-            <div className="space-y-6">
+          <CardContent className="p-8 card-gradient">
+            <div className="space-y-8">
               {currentQuestion.type === 'checkbox' ? (
                 <div className="space-y-4">
                   {currentQuestion.checkboxOptions?.map((option) => (
@@ -153,28 +153,51 @@ const QuestionsStep: React.FC<QuestionsStepProps> = ({
                   ))}
                 </div>
               ) : (
-                <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
-                  {ratingLabels.map((rating) => (
-                    <button
-                      key={rating.value}
-                      type="button"
-                      onClick={() => handleRatingSelect(currentQuestion.id, rating.value)}
-                      className={`rating-option flex flex-col items-center justify-center p-4 border rounded-lg transition-all ${
-                        currentQuestion.answer === rating.value
-                          ? "rating-option-selected bg-blue-50 border-blue-500"
-                          : "hover:bg-gray-50 border-gray-200"
-                      }`}
-                    >
-                      <span className={`text-2xl font-semibold ${
-                        currentQuestion.answer === rating.value ? "text-blue-700" : "text-gray-700"
-                      }`}>
-                        {rating.value}
-                      </span>
-                      <span className="text-xs text-gray-500 mt-1 text-center">
-                        {t(`rating.${rating.value}`)}
-                      </span>
-                    </button>
-                  ))}
+                <div className="space-y-6">
+                  {/* Professional Rating Scale */}
+                  <div className="bg-white rounded-2xl p-8 shadow-sm border border-slate-100">
+                    <div className="grid grid-cols-6 gap-4">
+                      {ratingLabels.map((rating, index) => (
+                        <div key={rating.value} className="flex flex-col items-center space-y-3">
+                          {/* Rating Button */}
+                          <button
+                            type="button"
+                            onClick={() => handleRatingSelect(currentQuestion.id, rating.value)}
+                            className={`w-16 h-16 rounded-full border-2 transition-all duration-300 flex items-center justify-center font-bold text-xl shadow-md hover:shadow-lg transform hover:scale-105 ${
+                              currentQuestion.answer === rating.value
+                                ? "bg-gradient-to-br from-blue-500 to-blue-600 border-blue-500 text-white shadow-blue-200"
+                                : "bg-white border-slate-200 text-slate-700 hover:border-blue-300 hover:bg-blue-50"
+                            }`}
+                          >
+                            {rating.value}
+                          </button>
+                          
+                          {/* Rating Label */}
+                          <div className={`text-center px-2 py-1 rounded-lg text-sm font-medium min-h-[3rem] flex items-center justify-center transition-colors ${
+                            currentQuestion.answer === rating.value
+                              ? "bg-blue-50 text-blue-700 border border-blue-200"
+                              : "text-slate-600"
+                          }`}>
+                            <span className="leading-tight">
+                              {t(`rating.${rating.value}`)}
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    
+                    {/* Scale Labels */}
+                    <div className="flex justify-between mt-6 px-8">
+                      <div className="text-center">
+                        <div className="w-2 h-2 bg-red-400 rounded-full mx-auto mb-2"></div>
+                        <span className="text-xs text-slate-500 font-medium">En Düşük</span>
+                      </div>
+                      <div className="text-center">
+                        <div className="w-2 h-2 bg-green-400 rounded-full mx-auto mb-2"></div>
+                        <span className="text-xs text-slate-500 font-medium">En Yüksek</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               )}
 
